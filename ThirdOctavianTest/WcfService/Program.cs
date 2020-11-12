@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Description;
@@ -12,20 +13,31 @@ namespace WcfService
     public interface IListOfUserService
     {
         [OperationContract]
-        string GetDepartament(int name);
+        Dictionary<int,string> GetDepartaments();
     }
 
     public class ListOfUser : IListOfUserService
     {
-        public string GetDepartament(int id)
+        public Dictionary<int, string> GetDepartaments()
         {
-            return string.Format("Вернул имя Отдела id", id);
+            Dictionary<int, string> departaments = new Dictionary<int, string>();
+            //метод добычи департамента из бд
+            departaments = ConectToDb.BecomeDictionaryFromBd("Departaments");
+            return departaments;
+        }
+        public Dictionary<int, string> GetRoles()
+        {
+            Dictionary<int, string> departaments = new Dictionary<int, string>();
+            //метод добычи Роли из бд
+            departaments = ConectToDb.BecomeDictionaryFromBd("Roles");
+            return departaments;
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
+           Dictionary<int,string> primer = ConectToDb.BecomeDictionaryFromBd("Roles");
             WSHttpBinding binding = new WSHttpBinding();
             binding.Name = "binding1";
             binding.HostNameComparisonMode = HostNameComparisonMode.StrongWildcard;
