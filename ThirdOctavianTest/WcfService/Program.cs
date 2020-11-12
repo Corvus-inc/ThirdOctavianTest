@@ -37,7 +37,9 @@ namespace WcfService
     {
         static void Main(string[] args)
         {
-           Dictionary<int,string> primer = ConectToDb.BecomeDictionaryFromBd("Roles");
+            User added = new User() { Departament = "dep", Role = "rol", Id = 1, Password = "pass", Login = "Log" };
+            ConectToDb.CreateUser(added, "Users");
+           
             WSHttpBinding binding = new WSHttpBinding();
             binding.Name = "binding1";
             binding.HostNameComparisonMode = HostNameComparisonMode.StrongWildcard;
