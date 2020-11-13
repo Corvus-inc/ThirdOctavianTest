@@ -43,11 +43,11 @@ namespace WcfService
     //$$ 
 
     //    CREATE Procedure User_Delete
-    //    (thisId int)
+    //    (uLogin varchar(40))
     //language sql
     //AS  $$  
     //Delete From users
-    //where "Id"=thisId  
+    //where login=uLogin 
     //$$
 
     //    Create Procedure User_Insert
@@ -111,7 +111,10 @@ namespace WcfService
             using (var con = new NpgsqlConnection(connectionString))
             {
                 con.Open();
-                using (var cmd = new NpgsqlCommand($"Call User_Insert({uDetails.Login},{uDetails.Password},{uDetails.Role},{uDetails.Id})", con))
+                using (var cmd = new NpgsqlCommand($"Call User_Insert('{uDetails.Login}'," +
+                    $"'{uDetails.Password}'," +
+                    $"'{uDetails.Role}'," +
+                    $"'{uDetails.DepartamentId}')", con))
                 {
                     //cmd.CommandType = CommandType.StoredProcedure;
                     //cmd.Parameters.AddWithValue("inlogin", uDetails.Login);
@@ -139,11 +142,24 @@ namespace WcfService
 
         }
 
-        public bool DeleteUserDetails(User uDatails)
+        public bool DeleteUserDetails(User uDetails)
         {
-            throw new NotImplementedException();
-        }
+            using (var con = new NpgsqlConnection(connectionString))
+            {
+                con.Open();
+                using (var cmd = new NpgsqlCommand($"Call User_Delete('{uDetails.Login}')", con))
+                {
 
+                    if (con.State == ConnectionState.Closed)
+                    {
+                        con.Open();
+                    }
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                    return true;
+                }
+            }
+        }
         public DataSet FetchUpdatedRecords(User uDatails)
         {
             throw new NotImplementedException();
@@ -151,7 +167,6 @@ namespace WcfService
 
         public DataSet GetUserDetails(User uDatails)
         {
-            string Status;
             using (var con = new NpgsqlConnection(connectionString))
             {
                 con.Open();
@@ -182,12 +197,13 @@ namespace WcfService
     {
         static void Main(string[] args)
         {
-            //ListOfUser list = new ListOfUser();
-            //User added = new User() { Departament = "'dep'", Role = "'rol'", Id = 1, Password = "'pass'", Login = "'Log'", DepartamentId = 35, RoleId = 3 };
+            ListOfUser list = new ListOfUser();
+            User added = new User() { Departament = "dep", Role = "rol", Id = 1, Password = "pass", Login = "Think", DepartamentId = 35, RoleId = 3 };
+            bool d = list.DeleteUserDetails(added);
             //DataSet f = list.GetUserDetails(added);
-            ////string s = list.InsertUserDetails(added);
-            //Console.WriteLine(f);
-            //ConectToDb.CreateUser(added, "Users");
+            //string s = list.InsertUserDetails(added);
+            Console.WriteLine();
+            
 
             WSHttpBinding binding = new WSHttpBinding();
             binding.Name = "binding1";
