@@ -27,23 +27,24 @@ namespace WcfService
         bool DeleteUserDetails(User uDetails);
     }
     #region SqlProcedurePostgress
-    //      Create Procedure User_Update
-    //(upId int,
-    //upLogin varchar(40),  
-    //upPassword varchar(40),  
-    //upRole varchar(40),
-    //upDeptId integer)
-    //language sql
-    //As $$
-    //update Users Set
-    //Login = upLogin,
-    //Password = upPassword,
-    //"departamentId"=upDeptId
-    //where "Id"=upId  
-    //$$ 
+    //    Create Procedure User_Update
+    //   (upId int,
+    //    upLogin varchar(40),  
+    //    upPassword varchar(40),  
+    //    upRoleId integer,
+    //    upDeptId integer)
+    //    language sql
+    //    As $$
+    //    update Users Set
+    //    Login = upLogin,
+    //    Password = upPassword,
+    //	  "roleid" = upRoleId,
+    //    "departamentId"=upDeptId
+    //    where "Id"=upId  
+    //    $$ 
 
     //   CREATE Procedure User_Delete
-    //(uid integer)
+    //  (uid integer)
     //   language sql
     //   AS  $$  
     //   Delete From users
@@ -111,37 +112,30 @@ namespace WcfService
             using (var con = new NpgsqlConnection(connectionString))
             {
                 con.Open();
-                using (var cmd = new NpgsqlCommand($"Call User_Insert('{uDetails.Login}'," +
+                using (var cmd = new NpgsqlCommand($"Call User_Insert(" +
+                    $"'{uDetails.Login}'," +
                     $"'{uDetails.Password}'," +
-                    $"'{uDetails.RoleId}'," +
-                    $"'{uDetails.DepartamentId}')", con))
+                    $"{uDetails.RoleId}," +
+                    $"{uDetails.DepartamentId})", con))
+               
                 {
+                    #region TryToCallProcedureFromProperty
                     //cmd.CommandType = CommandType.StoredProcedure;
                     //cmd.Parameters.AddWithValue("inlogin", uDetails.Login);
                     //cmd.Parameters.AddWithValue("inpassword", uDetails.Password);values.
                     //cmd.Parameters.AddWithValue("inroleid", uDetails.Role);
                     //cmd.Parameters.AddWithValue("indeptid", NpgsqlTypes.NpgsqlDbType.Integer).Value= uDetails.DepartamentId;
-                    //cmd.Prepare();
-                    if (con.State == ConnectionState.Closed)
-                    {
-                        con.Open();
-                    }
+                    //cmd.Prepare(); 
+                    #endregion
                     int result = cmd.ExecuteNonQuery();
-                    if (result == 1)
-                    {
-                        Status = uDetails.Login + " " + uDetails.Password + " registered successfully";
-                    }
-                    else
-                    {
-                        Status = uDetails.Login + " " + uDetails.Password + " could not be registered";
-                    }
+
+                    Status = result.ToString();
+
                     con.Close();
                     return Status;
                 }
             }
-
         }
-
         public bool DeleteUserDetails(User uDetails)
         {
             using (var con = new NpgsqlConnection(connectionString))
@@ -149,13 +143,10 @@ namespace WcfService
                 con.Open();
                 using (var cmd = new NpgsqlCommand($"Call User_Delete({uDetails.Id})", con))
                 {
-
-                    if (con.State == ConnectionState.Closed)
-                    {
-                        con.Open();
-                    }
                     cmd.ExecuteNonQuery();
+
                     con.Close();
+                    
                     return true;
                 }
             }
@@ -188,8 +179,27 @@ namespace WcfService
             }
         }
 
-        public string UpdateUserDetails(User uDatails)
+        public string UpdateUserDetails(User uDetails)
         {
+            string Status;
+            using (var con = new NpgsqlConnection(connectionString))
+            {
+                con.Open();
+                using (var cmd = new NpgsqlCommand($"Call User_Update(" +
+                   $"'{uDetails.Id}'," +
+                   $"'{uDetails.Login}'," +
+                   $"'{uDetails.Password}'," +
+                   $"'{uDetails.RoleId}'," +
+                   $"'{uDetails.DepartamentId}')", con))
+                {
+                    int result = cmd.ExecuteNonQuery();
+                    Status = result.ToString();
+
+                    con.Close(); //Актуальна ли эта строка в using  дерективе?
+
+                    return Status;
+                }
+            }
             throw new NotImplementedException();
         }
     }
@@ -198,11 +208,12 @@ namespace WcfService
         static void Main(string[] args)
         {
             ListOfUser list = new ListOfUser();
-            User added = new User() { Departament = "LOl", Role = "Friend", Password = "pass", Login = "Nagative", DepartamentId = 3, RoleId = 1, Id = 2 };
+            User added = new User() { Departament = "Ldd", Role = "Fiend", Password = "ss", Login = "Nagve", DepartamentId = 32, RoleId = 14, Id = 2 };
+            string u = list.UpdateUserDetails(added);
             //bool d = list.DeleteUserDetails(added);
             ////DataSet f = list.GetUserDetails(added);
             //string s = list.InsertUserDetails(added);
-            //Console.WriteLine();
+            Console.WriteLine(u);
 
 
             WSHttpBinding binding = new WSHttpBinding();
