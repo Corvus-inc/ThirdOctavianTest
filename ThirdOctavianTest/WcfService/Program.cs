@@ -42,24 +42,24 @@ namespace WcfService
     //where "Id"=upId  
     //$$ 
 
-    //    CREATE Procedure User_Delete
-    //    (uLogin varchar(40))
-    //language sql
-    //AS  $$  
-    //Delete From users
-    //where login=uLogin 
-    //$$
+    //   CREATE Procedure User_Delete
+    //(uid integer)
+    //   language sql
+    //   AS  $$  
+    //   Delete From users
+    //   where "Id" = uid
+    //   $$
 
     //    Create Procedure User_Insert
-    //(inLogin varchar(40),  
+    //   (inLogin varchar(40),  
     //    inPassword varchar(40),  
-    //    inRole varchar(40),
+    //    inRoleId integer),
     //    inDeptId integer)  
     //    LANGUAGE SQL
     //    AS $$  
     //    Insert into users
-    //    (Login, Password, Role,"departamentId") Values
-    //      (inLogin, inPassword, inRole, inDeptId)
+    //    (Login, Password, "roleid", "departamentId") Values
+    //      (inLogin, inPassword, inRoleId, inDeptId)
     //    $$
 
     //    Create Procedure Get_AllUsers
@@ -113,13 +113,13 @@ namespace WcfService
                 con.Open();
                 using (var cmd = new NpgsqlCommand($"Call User_Insert('{uDetails.Login}'," +
                     $"'{uDetails.Password}'," +
-                    $"'{uDetails.Role}'," +
+                    $"'{uDetails.RoleId}'," +
                     $"'{uDetails.DepartamentId}')", con))
                 {
                     //cmd.CommandType = CommandType.StoredProcedure;
                     //cmd.Parameters.AddWithValue("inlogin", uDetails.Login);
                     //cmd.Parameters.AddWithValue("inpassword", uDetails.Password);values.
-                    //cmd.Parameters.AddWithValue("inrole", uDetails.Role);
+                    //cmd.Parameters.AddWithValue("inroleid", uDetails.Role);
                     //cmd.Parameters.AddWithValue("indeptid", NpgsqlTypes.NpgsqlDbType.Integer).Value= uDetails.DepartamentId;
                     //cmd.Prepare();
                     if (con.State == ConnectionState.Closed)
@@ -147,7 +147,7 @@ namespace WcfService
             using (var con = new NpgsqlConnection(connectionString))
             {
                 con.Open();
-                using (var cmd = new NpgsqlCommand($"Call User_Delete('{uDetails.Login}')", con))
+                using (var cmd = new NpgsqlCommand($"Call User_Delete({uDetails.Id})", con))
                 {
 
                     if (con.State == ConnectionState.Closed)
@@ -198,12 +198,12 @@ namespace WcfService
         static void Main(string[] args)
         {
             ListOfUser list = new ListOfUser();
-            User added = new User() { Departament = "dep", Role = "rol", Id = 1, Password = "pass", Login = "Think", DepartamentId = 35, RoleId = 3 };
-            bool d = list.DeleteUserDetails(added);
-            //DataSet f = list.GetUserDetails(added);
+            User added = new User() { Departament = "LOl", Role = "Friend", Password = "pass", Login = "Nagative", DepartamentId = 3, RoleId = 1, Id = 2 };
+            //bool d = list.DeleteUserDetails(added);
+            ////DataSet f = list.GetUserDetails(added);
             //string s = list.InsertUserDetails(added);
-            Console.WriteLine();
-            
+            //Console.WriteLine();
+
 
             WSHttpBinding binding = new WSHttpBinding();
             binding.Name = "binding1";
