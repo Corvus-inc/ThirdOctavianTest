@@ -103,22 +103,7 @@ namespace WcfService
 
     public class ListOfUser : IListOfUserService
     {
-        //public Dictionary<int, string> GetDepartaments()
-        //{
-        //    Dictionary<int, string> departaments = new Dictionary<int, string>();
-        //    //метод добычи департамента из бд
-        //    departaments = ConectToDb.BecomeDictionaryFromBd("Departaments");
-        //    return departaments;
-        //}
-        //public Dictionary<int, string> GetRoles()
-        //{
-        //    Dictionary<int, string> departaments = new Dictionary<int, string>();
-        //    //метод добычи Роли из бд
-        //    departaments = ConectToDb.BecomeDictionaryFromBd("Roles");
-        //    return departaments;
-        //}
-
-        static string connectionString = "Host=localhost;Username=postgres;Password=pa$$word;Database=Corvus";
+        static string connectionString = "Host=localhost;Database=Corvus;Username=postgres;Persist Security Info=True;Password=pa$$word;";
 
         public string InsertUserDetails(User uDetails)
         {
@@ -126,14 +111,14 @@ namespace WcfService
             using (var con = new NpgsqlConnection(connectionString))
             {
                 con.Open();
-                using (var cmd = new NpgsqlCommand("User_Insert", con))
+                using (var cmd = new NpgsqlCommand($"Call User_Insert({uDetails.Login},{uDetails.Password},{uDetails.Role},{uDetails.Id})", con))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("inLogin", uDetails.Login);
-                    cmd.Parameters.AddWithValue("inPassword", uDetails.Password);
-                    cmd.Parameters.AddWithValue("inRole", uDetails.Role);
-                    cmd.Parameters.AddWithValue("inDeptId", uDetails.DepartamentId);
-                    cmd.Prepare();
+                    //cmd.CommandType = CommandType.StoredProcedure;
+                    //cmd.Parameters.AddWithValue("inlogin", uDetails.Login);
+                    //cmd.Parameters.AddWithValue("inpassword", uDetails.Password);values.
+                    //cmd.Parameters.AddWithValue("inrole", uDetails.Role);
+                    //cmd.Parameters.AddWithValue("indeptid", NpgsqlTypes.NpgsqlDbType.Integer).Value= uDetails.DepartamentId;
+                    //cmd.Prepare();
                     if (con.State == ConnectionState.Closed)
                     {
                         con.Open();
@@ -170,10 +155,10 @@ namespace WcfService
             using (var con = new NpgsqlConnection(connectionString))
             {
                 con.Open();
-                using (var cmd = new NpgsqlCommand("Get_AllUser", con))
+                using (var cmd = new NpgsqlCommand($"Call Get_AllUsers({uDatails.Id})", con))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("Id", uDatails.Id);
+                    //cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("id", uDatails.Id);
                     if (con.State == ConnectionState.Closed)
                     {
                         con.Open();
@@ -197,12 +182,12 @@ namespace WcfService
     {
         static void Main(string[] args)
         {
-            ListOfUser list = new ListOfUser();
-            User added = new User() { Departament = "'dep'", Role = "'rol'", Id = 1, Password = "'pass'", Login = "'Log'", DepartamentId = 1, RoleId = 3 };
+            //ListOfUser list = new ListOfUser();
+            //User added = new User() { Departament = "'dep'", Role = "'rol'", Id = 1, Password = "'pass'", Login = "'Log'", DepartamentId = 35, RoleId = 3 };
             //DataSet f = list.GetUserDetails(added);
-            string s = list.InsertUserDetails(added);
-            Console.WriteLine();
-            ConectToDb.CreateUser(added, "Users");
+            ////string s = list.InsertUserDetails(added);
+            //Console.WriteLine(f);
+            //ConectToDb.CreateUser(added, "Users");
 
             WSHttpBinding binding = new WSHttpBinding();
             binding.Name = "binding1";
