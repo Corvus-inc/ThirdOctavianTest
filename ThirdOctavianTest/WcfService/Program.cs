@@ -16,15 +16,9 @@ namespace WcfService
     public interface IListOfUserService
     {
         [OperationContract]
-        string InsertUserDetails(User uDetails);
+        void SetUserDetails(User uDetails, ProcedureDB nameProcedure);
         [OperationContract]
-        DataSet GetUserDetails(User uDetails);
-        [OperationContract]
-        DataSet FetchUpdatedRecords(User uDetails);
-        [OperationContract]
-        string UpdateUserDetails(User uDetails);
-        [OperationContract]
-        bool DeleteUserDetails(User uDetails);
+        DataSet GetUserDetails(User uDetails, ProcedureDB nameProcedure);
     }
     #region SqlProcedurePostgress
     //    Create Procedure User_Update
@@ -81,9 +75,9 @@ namespace WcfService
         int? uId;
         string uLogin = string.Empty;
         string uPassword = string.Empty;
-        string uRoleId = string.Empty;
+        int ?uRoleId;
         string uRole = string.Empty;
-        string uDepartamentId = string.Empty;
+        int ?uDepartamentId;
         string uDepartament = string.Empty;
         [DataMember]
         public int? Id { get; set; }
@@ -102,69 +96,47 @@ namespace WcfService
 
     }
 
+    public enum ProcedureDB
+    {
+        UserInsert,
+        RoleInsert,
+        DeptInsert,
+        UserUpdate,
+        RoleUpdate,
+        DeptUpdate,
+        UserDelete,
+        RoleDelete,
+        DeptDelete,
+        GetAllUser,
+        GetAllRole,
+        GetAllDept,
+    }
+
     public class ListOfUser : IListOfUserService
     {
         static string connectionString = "Host=localhost;Database=Corvus;Username=postgres;Persist Security Info=True;Password=pa$$word;";
 
-        public string InsertUserDetails(User uDetails)
+        public void SetUserDetails(User uDetails, ProcedureDB nameProcedure)
         {
-            string Status;
             using (var con = new NpgsqlConnection(connectionString))
             {
                 con.Open();
-                using (var cmd = new NpgsqlCommand($"Call User_Insert(" +
-                    $"'{uDetails.Login}'," +
-                    $"'{uDetails.Password}'," +
-                    $"{uDetails.RoleId}," +
-                    $"{uDetails.DepartamentId})", con))
+                using (var cmd = new NpgsqlCommand(CallProcedureString(uDetails,nameProcedure), con))
                
                 {
-                    #region TryToCallProcedureFromProperty
-                    //cmd.CommandType = CommandType.StoredProcedure;
-                    //cmd.Parameters.AddWithValue("inlogin", uDetails.Login);
-                    //cmd.Parameters.AddWithValue("inpassword", uDetails.Password);values.
-                    //cmd.Parameters.AddWithValue("inroleid", uDetails.Role);
-                    //cmd.Parameters.AddWithValue("indeptid", NpgsqlTypes.NpgsqlDbType.Integer).Value= uDetails.DepartamentId;
-                    //cmd.Prepare(); 
-                    #endregion
                     int result = cmd.ExecuteNonQuery();
-
-                    Status = result.ToString();
-
-                    con.Close();
-                    return Status;
                 }
             }
         }
-        public bool DeleteUserDetails(User uDetails)
+        public DataSet GetUserDetails(User uDetails, ProcedureDB nameProcedure)
         {
             using (var con = new NpgsqlConnection(connectionString))
             {
                 con.Open();
-                using (var cmd = new NpgsqlCommand($"Call User_Delete({uDetails.Id})", con))
-                {
-                    cmd.ExecuteNonQuery();
-
-                    con.Close();
-                    
-                    return true;
-                }
-            }
-        }
-        public DataSet FetchUpdatedRecords(User uDatails)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataSet GetUserDetails(User uDatails)
-        {
-            using (var con = new NpgsqlConnection(connectionString))
-            {
-                con.Open();
-                using (var cmd = new NpgsqlCommand($"Call Get_AllUsers({uDatails.Id})", con))
+                using (var cmd = new NpgsqlCommand($"Call Get_AllUsers({uDetails.Id})", con))
                 {
                     //cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("id", uDatails.Id);
+                    cmd.Parameters.AddWithValue("id", uDetails.Id);
                     if (con.State == ConnectionState.Closed)
                     {
                         con.Open();
@@ -178,29 +150,59 @@ namespace WcfService
                 }
             }
         }
-
-        public string UpdateUserDetails(User uDetails)
+        private string CallProcedureString(User uDetails, ProcedureDB nameProcedure)
         {
-            string Status;
-            using (var con = new NpgsqlConnection(connectionString))
+            string ProcedureString = string.Empty;
+            switch (nameProcedure)
             {
-                con.Open();
-                using (var cmd = new NpgsqlCommand($"Call User_Update(" +
-                   $"'{uDetails.Id}'," +
-                   $"'{uDetails.Login}'," +
-                   $"'{uDetails.Password}'," +
-                   $"'{uDetails.RoleId}'," +
-                   $"'{uDetails.DepartamentId}')", con))
-                {
-                    int result = cmd.ExecuteNonQuery();
-                    Status = result.ToString();
-
-                    con.Close(); //Актуальна ли эта строка в using  дерективе?
-
-                    return Status;
-                }
+                case ProcedureDB.UserInsert:
+                    ProcedureString = $"Call User_Insert(" +
+                    $"'{uDetails.Login}'," +
+                    $"'{uDetails.Password}'," +
+                    $"{uDetails.RoleId}," +
+                    $"{uDetails.DepartamentId})";
+                    break;
+                case ProcedureDB.UserUpdate:
+                    ProcedureString = $"Call User_Update(" +
+                    $"'{uDetails.Id}'," +
+                    $"'{uDetails.Login}'," +
+                    $"'{uDetails.Password}'," +
+                    $"'{uDetails.RoleId}'," +
+                    $"'{uDetails.DepartamentId}')";
+                    break;
+                case ProcedureDB.UserDelete:
+                    ProcedureString = $"Call User_Delete({uDetails.Id})";
+                    break;
+                case ProcedureDB.GetAllUser:
+                    ProcedureString = $"Call Get_AllUsers({uDetails.Id})";
+                    break;
+                case ProcedureDB.DeptInsert:
+                   
+                    break;
+                case ProcedureDB.DeptUpdate:
+                   
+                    break;
+                case ProcedureDB.DeptDelete:
+                   
+                    break;
+                case ProcedureDB.GetAllDept:
+                   
+                    break;
+                case ProcedureDB.RoleInsert:
+                   
+                    break;
+                case ProcedureDB.RoleUpdate:
+                   
+                    break;
+                case ProcedureDB.RoleDelete:
+                   
+                    break;
+                case ProcedureDB.GetAllRole:
+                   
+                    break;
+               
             }
-            throw new NotImplementedException();
+            return ProcedureString;
         }
     }
     class Program
@@ -209,11 +211,11 @@ namespace WcfService
         {
             ListOfUser list = new ListOfUser();
             User added = new User() { Departament = "Ldd", Role = "Fiend", Password = "ss", Login = "Nagve", DepartamentId = 32, RoleId = 14, Id = 2 };
-            string u = list.UpdateUserDetails(added);
+            //string u = list.UpdateUserDetails(added);
             //bool d = list.DeleteUserDetails(added);
             ////DataSet f = list.GetUserDetails(added);
             //string s = list.InsertUserDetails(added);
-            Console.WriteLine(u);
+            Console.WriteLine();
 
 
             WSHttpBinding binding = new WSHttpBinding();
