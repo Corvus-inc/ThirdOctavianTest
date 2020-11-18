@@ -1,0 +1,72 @@
+﻿CREATE OR REPLACE Procedure User_Update
+(upId int,
+upLogin varchar(40),  
+upPassword varchar(40),  
+upRoleId integer,
+upDeptId integer)
+language sql
+As $$
+update Users Set
+Login = upLogin,
+Password = upPassword,
+roleid = upRoleId,
+deptid = upDeptId
+where Id = upId  
+$$ 
+
+       CREATE OR REPLACE Procedure User_Delete
+      (uid integer)
+       language sql
+       AS  $$  
+       Delete From users
+       where Id = uid
+       $$
+
+CREATE OR REPLACE Procedure User_Insert
+(inLogin varchar(40),  
+ inPassword varchar(40),  
+ inRoleId integer,
+ inDeptId integer)  
+ LANGUAGE SQL
+ AS $$  
+ Insert into users
+(Login, Password, roleid, deptid) Values
+ (inLogin, inPassword, inRoleId, inDeptId)
+ $$
+
+     CREATE OR REPLACE Procedure Get_AllUsers
+    (uId int = null)
+    language sql
+    AS $$  
+    Select U.Id, U.login, U.password, U.deptid, U.roleid, D.name, R.Name
+    From users U
+	Left Join roles R
+	On U.roleid = R.id
+	Left Join depts D
+	On U.deptid = D.Id
+    $$
+    ////AS $$  
+    ////Select E."Id", E.Login, E.Role, E."departamentId", D.Name
+    ////From users E
+    ////Join Roles D
+    ////On E."departamentId" = D.Id
+    ////where D.Status = 1
+    ////And Id = COALESCE(uId, Id)  
+    ////$$ 
+
+    CREATE TABLE users
+(id    integer PRIMARY KEY,
+ login varchar,
+ parol varchar,
+deptid integer,
+dert varchar,
+roleid integer,
+role varchar)
+
+CREATE TABLE depts
+(id    integer PRIMARY KEY,
+ name varchar)
+
+ CREATE TABLE roles
+(id    integer PRIMARY KEY,
+ name varchar)

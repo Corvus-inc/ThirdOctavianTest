@@ -20,55 +20,6 @@ namespace WcfService
         [OperationContract]
         DataSet GetUserDetails(User uDetails, ProcedureDB nameProcedure);
     }
-    #region SqlProcedurePostgress
-    //    Create Procedure User_Update
-    //   (upId int,
-    //    upLogin varchar(40),  
-    //    upPassword varchar(40),  
-    //    upRoleId integer,
-    //    upDeptId integer)
-    //    language sql
-    //    As $$
-    //    update Users Set
-    //    Login = upLogin,
-    //    Password = upPassword,
-    //	  "roleid" = upRoleId,
-    //    "departamentId"=upDeptId
-    //    where "Id"=upId  
-    //    $$ 
-
-    //   CREATE Procedure User_Delete
-    //  (uid integer)
-    //   language sql
-    //   AS  $$  
-    //   Delete From users
-    //   where "Id" = uid
-    //   $$
-
-    //    Create Procedure User_Insert
-    //   (inLogin varchar(40),  
-    //    inPassword varchar(40),  
-    //    inRoleId integer),
-    //    inDeptId integer)  
-    //    LANGUAGE SQL
-    //    AS $$  
-    //    Insert into users
-    //    (Login, Password, "roleid", "departamentId") Values
-    //      (inLogin, inPassword, inRoleId, inDeptId)
-    //    $$
-
-    //    Create Procedure Get_AllUsers
-    //(uId int = null)
-    //language sql
-    //AS $$  
-    //Select E."Id", E.Login, E.Role, E."departamentId", D.Name
-    //From users E
-    //Join Roles D
-    //On E."departamentId" = D.Id
-    //where D.Status = 1
-    //And Id = COALESCE(uId, Id)  
-    //$$ 
-    #endregion
     [DataContract]
     public class User
     {
@@ -133,10 +84,10 @@ namespace WcfService
             using (var con = new NpgsqlConnection(connectionString))
             {
                 con.Open();
-                using (var cmd = new NpgsqlCommand($"Call Get_AllUsers({uDetails.Id})", con))
+                using (var cmd = new NpgsqlCommand(CallProcedureString(uDetails, nameProcedure), con))
                 {
                     //cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("id", uDetails.Id);
+                    
                     if (con.State == ConnectionState.Closed)
                     {
                         con.Open();
@@ -174,7 +125,12 @@ namespace WcfService
                     ProcedureString = $"Call User_Delete({uDetails.Id})";
                     break;
                 case ProcedureDB.GetAllUser:
-                    ProcedureString = $"Call Get_AllUsers({uDetails.Id})";
+                    ProcedureString = "Select U.Id, U.login, U.password, U.deptid, U.roleid, D.name, R.Name" +
+                        "    From users U" +
+                        "    Left Join roles R" +
+                        "    On U.roleid = R.id" +
+                        "    Left Join depts D" +
+                        "    On U.deptid = D.Id";
                     break;
                 case ProcedureDB.DeptInsert:
                    
@@ -210,12 +166,14 @@ namespace WcfService
         static void Main(string[] args)
         {
             ListOfUser list = new ListOfUser();
-            User added = new User() { Departament = "Ldd", Role = "Fiend", Password = "ss", Login = "Nagve", DepartamentId = 32, RoleId = 14, Id = 2 };
+            User added = new User() { Departament = "run", Role = "oll", Password = "enter", Login = "Third", DepartamentId = 3, RoleId = 2, Id = 1 };
+            //list.SetUserDetails(added, ProcedureDB.UserInsert);
             //string u = list.UpdateUserDetails(added);
             //bool d = list.DeleteUserDetails(added);
-            ////DataSet f = list.GetUserDetails(added);
+            DataSet f = list.GetUserDetails(added, ProcedureDB.GetAllUser);
             //string s = list.InsertUserDetails(added);
-            Console.WriteLine();
+            DataTable dataTable = f.Tables[0];
+            Console.WriteLine(dataTable.Columns[1].ColumnName);
 
 
             WSHttpBinding binding = new WSHttpBinding();
