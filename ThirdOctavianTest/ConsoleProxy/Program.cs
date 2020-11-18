@@ -8,8 +8,8 @@ namespace ConsoleProxy
         static void Main(string[] args)
         {
             ListOfUserServiceClient client = new ListOfUserServiceClient();
-            var resultDep = client.GetDepartamentAsync(25);
-            Console.WriteLine(resultDep.Result);
+            var resultDep = client.GetUserDetailsAsync(GetCommandDB.GetAllUser).Result;
+            
         }
     }
 }

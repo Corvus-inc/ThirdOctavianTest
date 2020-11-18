@@ -9,15 +9,179 @@
 
 namespace ServiceReference1
 {
+    using System.Runtime.Serialization;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="User", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    public partial class User : object
+    {
+        
+        private string DepartamentField;
+        
+        private int DepartamentIdField;
+        
+        private System.Nullable<int> IdField;
+        
+        private string LoginField;
+        
+        private string PasswordField;
+        
+        private string RoleField;
+        
+        private int RoleIdField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Departament
+        {
+            get
+            {
+                return this.DepartamentField;
+            }
+            set
+            {
+                this.DepartamentField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int DepartamentId
+        {
+            get
+            {
+                return this.DepartamentIdField;
+            }
+            set
+            {
+                this.DepartamentIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> Id
+        {
+            get
+            {
+                return this.IdField;
+            }
+            set
+            {
+                this.IdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Login
+        {
+            get
+            {
+                return this.LoginField;
+            }
+            set
+            {
+                this.LoginField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Password
+        {
+            get
+            {
+                return this.PasswordField;
+            }
+            set
+            {
+                this.PasswordField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Role
+        {
+            get
+            {
+                return this.RoleField;
+            }
+            set
+            {
+                this.RoleField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int RoleId
+        {
+            get
+            {
+                return this.RoleIdField;
+            }
+            set
+            {
+                this.RoleIdField = value;
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ProcedureDB", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    public enum ProcedureDB : int
+    {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        UserInsert = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        RoleInsert = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        DeptInsert = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        UserUpdate = 3,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        RoleUpdate = 4,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        DeptUpdate = 5,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        UserDelete = 6,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        RoleDelete = 7,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        DeptDelete = 8,
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GetCommandDB", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    public enum GetCommandDB : int
+    {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GetAllUser = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GetAllRole = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GetAllDept = 2,
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IListOfUserService")]
     public interface IListOfUserService
     {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/GetDepartament", ReplyAction="http://tempuri.org/IListOfUserService/GetDepartamentResponse")]
-        System.Threading.Tasks.Task<string> GetDepartamentAsync(int name);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/SetUserDetails", ReplyAction="http://tempuri.org/IListOfUserService/SetUserDetailsResponse")]
+        System.Threading.Tasks.Task SetUserDetailsAsync(ServiceReference1.User uDetails, ServiceReference1.ProcedureDB nameProcedure);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/GetUserDetails", ReplyAction="http://tempuri.org/IListOfUserService/GetUserDetailsResponse")]
+        System.Threading.Tasks.Task<ServiceReference1.User[]> GetUserDetailsAsync(ServiceReference1.GetCommandDB cmdRequest);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
@@ -70,9 +234,14 @@ namespace ServiceReference1
         {
         }
         
-        public System.Threading.Tasks.Task<string> GetDepartamentAsync(int name)
+        public System.Threading.Tasks.Task SetUserDetailsAsync(ServiceReference1.User uDetails, ServiceReference1.ProcedureDB nameProcedure)
         {
-            return base.Channel.GetDepartamentAsync(name);
+            return base.Channel.SetUserDetailsAsync(uDetails, nameProcedure);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceReference1.User[]> GetUserDetailsAsync(ServiceReference1.GetCommandDB cmdRequest)
+        {
+            return base.Channel.GetUserDetailsAsync(cmdRequest);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
@@ -106,7 +275,7 @@ namespace ServiceReference1
         {
             if ((endpointConfiguration == EndpointConfiguration.binding1_IListOfUserService))
             {
-                return new System.ServiceModel.EndpointAddress("http://localhost:8080/Departament");
+                return new System.ServiceModel.EndpointAddress("http://localhost:8080/Users");
             }
             throw new System.InvalidOperationException(string.Format("Не удалось найти конечную точку с именем \"{0}\".", endpointConfiguration));
         }
