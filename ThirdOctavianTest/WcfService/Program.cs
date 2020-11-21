@@ -19,6 +19,7 @@ namespace WcfService
         void SetUserDetails(User uDetails, ProcedureDB nameProcedure);
         [OperationContract]
         List<User> GetUserDetails(GetCommandDB cmdRequest);
+        //Авторизация определяется в контракте?
     }
     [DataContract]
     public class User
