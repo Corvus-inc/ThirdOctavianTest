@@ -12,7 +12,10 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+//По окончанию все ссылки почистить, добавить одну  '@angular/material/'
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +30,10 @@ import { MatInputModule } from '@angular/material/input';
     MatSliderModule,
     MatTableModule,
     MatListModule,
-    MatInputModule
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatIconModule
   ],
   providers: [SignalRService],
   bootstrap: [AppComponent]

@@ -28,7 +28,7 @@ export class SignalRService {
   public addReceive = () => {
     this.hubConnection.on('SetArray', (data) => {
       this.data = data;
-      console.log(this.data);
+      console.log(data);
     });
   }
 }

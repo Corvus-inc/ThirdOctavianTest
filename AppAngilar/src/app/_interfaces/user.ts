@@ -1,9 +1,9 @@
 export interface User {
-	Id: number;
-    Login: string;
-    Password: string;
-    RoleId: number;
-    Role: string;
-    DepartamentId: number;
-    Departament: string;
+	id: number;
+    login: string;
+    password: string;
+    roleId: number;
+    role: string;
+    departamentId: number;
+    departament: string;
 }

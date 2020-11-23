@@ -3,6 +3,7 @@ import { SignalRService } from '../_service/signal-r.service';
 import { MatListModule } from '@angular/material/list';
 import { MatRow } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { User } from '../_interfaces/user';
 
 
@@ -12,21 +13,20 @@ import { User } from '../_interfaces/user';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-
-  displayedColumns = ['Login', 'Password', 'Role', 'Departament'];
+  hide = true;
+  displayedColumns = ['login', 'password', 'role', 'departament'];
   dataSource: User[];
-  public elementSelect: User = { Login: 'New Element', Password: 'sfwe', Role: 'None', Departament: 'dcfs'  };
+  public elementSelect: User = { login: '', password: '', role: '', departament: '', departamentId: 0, id: 0, roleId: 0}; 
   constructor(public signalRService: SignalRService) { }
 
   ngOnInit(): void {
     this.signalRService.startConnection();
     this.signalRService.addReceive();
-    this.dataSource = this.signalRService.data;
-    
+    this.dataSource =  this.signalRService.data;
+   
   }
   ClickThem(names: User) {
-    console.log('wac');
-    console.log(names.Login);
+    console.log(names.login);
     this.elementSelect = names;
   }
 }
