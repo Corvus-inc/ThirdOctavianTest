@@ -11,6 +11,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MatListModule } from '@angular/material/list';
     MatExpansionModule,
     MatSliderModule,
     MatTableModule,
-    MatListModule
+    MatListModule,
+    MatInputModule
   ],
   providers: [SignalRService],
   bootstrap: [AppComponent]

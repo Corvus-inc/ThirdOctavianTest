@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SignalRService } from '../_service/signal-r.service';
 import { MatListModule } from '@angular/material/list';
+import { MatRow } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { User } from '../_interfaces/user';
 
 
 @Component({
@@ -10,16 +13,22 @@ import { MatListModule } from '@angular/material/list';
 })
 export class FormComponent implements OnInit {
 
-  typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
-
-  displayedColumns = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+  displayedColumns = ['Login', 'Password', 'Role', 'Departament'];
+  dataSource: User[];
+  public elementSelect: User = { Login: 'New Element', Password: 'sfwe', Role: 'None', Departament: 'dcfs'  };
   constructor(public signalRService: SignalRService) { }
 
   ngOnInit(): void {
     this.signalRService.startConnection();
     this.signalRService.addReceive();
-  } 
+    this.dataSource = this.signalRService.data;
+    
+  }
+  ClickThem(names: User) {
+    console.log('wac');
+    console.log(names.Login);
+    this.elementSelect = names;
+  }
 }
 
 export interface PeriodicElement {
