@@ -16,7 +16,7 @@ export class SignalRService {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('https://localhost:5001/MessageHub')
       .build();
-    this.com = 0;
+    this.com = GetCommandDB.GetAllUser;
     //this.us = { Login: 'Privet', Id: 24 };
     this.hubConnection
       .start()

@@ -117,7 +117,7 @@ namespace WcfService
             User u;
             DataTable tableU = data.Tables[0];
             users = new List<User>(tableU.Rows.Count);
-            for (int i = 0; i < tableU.Columns.Count-2; i++)
+            for (int i = 0; i < tableU.Rows.Count; i++)
             {
                 u = new User();
 
@@ -223,12 +223,12 @@ namespace WcfService
     {
         static void Main(string[] args)
         {
-            //ListOfUser list = new ListOfUser();
-            //User added = new User() { Departament = "run", Role = "oll", Password = "enter", Login = "Third", DepartamentId = 3, RoleId = 2, Id = 1 };
-            ////list.SetUserDetails(added, ProcedureDB.UserInsert);
+            ListOfUser list = new ListOfUser();
+            //User added = new User() { Departament = "", Role = "", Password = "Rick@", Login = "Mortimer", DepartamentId = 2, RoleId = 1, Id = 1 };
+            //list.SetUserDetails(added, ProcedureDB.UserInsert);
             ////string u = list.UpdateUserDetails(added);
             ////bool d = list.DeleteUserDetails(added);
-            //List<User> f = list.GetUserDetails(GetCommandDB.GetAllUser);
+            List<User> f = list.GetUserDetails(GetCommandDB.GetAllUser);
             ////string s = list.InsertUserDetails(added);
             //DataTable dataTable = f.Tables[0];
             //Console.WriteLine(dataTable.Columns[3].ColumnName);
