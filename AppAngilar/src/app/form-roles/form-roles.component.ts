@@ -8,9 +8,7 @@ import { User } from '../_interfaces/user';
   styleUrls: ['./form-roles.component.css']
 })
 export class FormRolesComponent implements OnInit {
-  hide = true;
-  
-  
+    
   constructor() { }
 
   ngOnInit(): void {

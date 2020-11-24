@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { SignalRService } from '../_service/signal-r.service';
-import { MatListModule } from '@angular/material/list';
-import { MatRow } from '@angular/material/table';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { User } from '../_interfaces/user';
 
 
@@ -23,8 +19,6 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
     this.signalRService.startConnection();
     this.signalRService.addReceive();
-
-   
   }
   SelectRow(names: User) {
     this.elementSelect = names;

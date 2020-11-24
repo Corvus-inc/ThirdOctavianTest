@@ -16,12 +16,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { FormRolesComponent } from './form-roles/form-roles.component';
-//По окончанию все ссылки почистить, добавить одну  '@angular/material/'
+import { MatButtonModule } from '@angular/material/button';
+import { FormMainComponent } from './form-main/form-main.component';
+//Можно ли все сылки Материалов в одну собрать? Модуль пдключить может быть?
 @NgModule({
   declarations: [
     AppComponent,
     FormComponent,
-    FormRolesComponent
+    FormRolesComponent,
+    FormMainComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,8 @@ import { FormRolesComponent } from './form-roles/form-roles.component';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
   ],
   providers: [SignalRService],
   bootstrap: [AppComponent]
