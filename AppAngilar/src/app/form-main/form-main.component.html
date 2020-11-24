@@ -9,7 +9,7 @@
   <button mat-fab color="warn" (click)="OpenDepts()">Departaments</button>
 </div>
 <div *ngIf ="onuser">
-  <app-form> </app-form>
+  <app-form [dataSource] ="this.signalRService.data"></app-form>
 </div>
 <div *ngIf ="onrole">
   <app-form-roles> </app-form-roles>

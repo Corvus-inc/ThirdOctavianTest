@@ -25,10 +25,9 @@ namespace ConsoleProxy
             Console.WriteLine("SetMethod");
             await Clients.All.SendAsync("linkMethod", "RETUNED");
         }
-        public async Task Send(User message)
+        public async Task Send(string message)
         {
-            Console.WriteLine(message.Id);
-            Console.WriteLine(message.Login);
+            Console.WriteLine(message);
             await Clients.All.SendAsync("Receive", message);
         }
     }

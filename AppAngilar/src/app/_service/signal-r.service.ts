@@ -8,6 +8,8 @@ import { ProcedureDB } from '../_interfaces/set-command';
   providedIn: 'root'
 })
 export class SignalRService {
+  // Именование свойств в TypeScript начинаются со строчной буквы. Видимо, не просто так. Не запутаться....
+  // Пройтись по всем  строкам проверить уровень доступности  свойств. Убрать лишнее.
   private hubConnection: signalR.HubConnection;
   public link: string;
   public com: GetCommandDB;
@@ -21,11 +23,10 @@ export class SignalRService {
     this.com = GetCommandDB.GetAllUser;
     this.hubConnection
       .start()
-      .then(() => {
-        this.hubConnection.invoke('GetRequest', this.com);
-      });
-
+      .then(() => { this.hubConnection.invoke('Send', "Message for stabile connection"); })
+      .catch(err => console.log('Error while starting connection: ' + err));
   }
+
   public addReceive = () => {
     this.hubConnection.on('SetArray', (data) => {
       this.data = data;
@@ -44,5 +45,15 @@ export class SignalRService {
     this.hubConnection.invoke('SetRequest', userDetails, setcom)
       .catch(err => console.error(err));
   }
-
+  public addGetRequest = () => {
+    this.hubConnection.invoke('GetRequest', 0)
+      .catch(err => console.error(err));
+  }
 }
+//.then(() => { this.hubConnection.invoke('Send', "Message for stabile connection"); })
+//  .catch(err => console.log('Error while starting connection: ' + err));
+//this.hubConnection.on('Receive', (data) => { console.log(data); });
+//  }
+//  public addGetRequest = () => {
+//  this.hubConnection.invoke('GetRequest', this.com)
+//    .catch(err => console.error(err));

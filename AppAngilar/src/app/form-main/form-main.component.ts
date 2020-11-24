@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SignalRService } from '../_service/signal-r.service';
+import { User } from '../_interfaces/user';
 
 @Component({
   selector: 'app-form-main',
@@ -10,13 +12,19 @@ export class FormMainComponent implements OnInit {
   onuser = false;
   onrole = false;
   ondept = false;
-  constructor() { }
+
+  dataSource: User[];
+  constructor(public signalRService: SignalRService) { }
 
   ngOnInit(): void {
+    this.signalRService.startConnection();
+    this.signalRService.addReceive();
   }
   OpenUsers() {
     this.onuser = true;
     this.onmain = false;
+    this.signalRService.addGetRequest();
+    this.dataSource = this.signalRService.data;
   }
   OpenRoles() {
     this.onrole = true;
