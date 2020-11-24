@@ -17,6 +17,14 @@ namespace ConsoleProxy
             Console.WriteLine(resultList[0].Login);
             await Clients.All.SendAsync("SetArray", resultList);
         }
+        public async Task SetRequest(User userDetails, ProcedureDB SetCommand)
+        {
+            ListOfUserServiceClient client = new ListOfUserServiceClient();
+
+            await client.SetUserDetailsAsync(userDetails, SetCommand);
+            Console.WriteLine("SetMethod");
+            await Clients.All.SendAsync("linkMethod", "RETUNED");
+        }
         public async Task Send(User message)
         {
             Console.WriteLine(message.Id);

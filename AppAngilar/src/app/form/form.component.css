@@ -25,3 +25,6 @@ input.example-right-align::-webkit-inner-spin-button {
 input.example-right-align {
   -moz-appearance: textfield;
 }
+.card-user {
+  max-width: 400px;
+}

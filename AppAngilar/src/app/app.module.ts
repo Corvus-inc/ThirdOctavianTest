@@ -19,6 +19,8 @@ import { FormRolesComponent } from './form-roles/form-roles.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FormMainComponent } from './form-main/form-main.component';
 import { FormDeptComponent } from './form-dept/form-dept.component';
+import { MatCardModule } from '@angular/material/card';
+
 //Можно ли все сылки Материалов в одну собрать? Модуль пдключить может быть?
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { FormDeptComponent } from './form-dept/form-dept.component';
     MatFormFieldModule,
     MatSelectModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule
   ],
   providers: [SignalRService],
   bootstrap: [AppComponent]
