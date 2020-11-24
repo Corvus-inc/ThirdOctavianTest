@@ -52,21 +52,15 @@
     
     <mat-form-field appearance="fill">
       <mat-label>Role</mat-label>
-      <mat-select>
-        <mat-option value="option">Option</mat-option>
-        <mat-option value="option">Opt</mat-option>
-        <mat-option value="option">ti</mat-option>
-        <mat-option value="option">on</mat-option>
+      <mat-select [formControl]="defForm">
+        <mat-option *ngFor="let role of displayedRoles" [value]="role">{{role}}</mat-option>
       </mat-select>
     </mat-form-field>
     
     <mat-form-field appearance="fill">
       <mat-label>Departament</mat-label>
-      <mat-select>
-        <mat-option value="option">Option</mat-option>
-        <mat-option value="option">Opt</mat-option>
-        <mat-option value="option">ti</mat-option>
-        <mat-option value="option">on</mat-option>
+      <mat-select [formControl]="defForm">
+        <mat-option  *ngFor="let dept of displayedDepts" [value]="dept">{{dept}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

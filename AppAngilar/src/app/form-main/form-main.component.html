@@ -1,6 +1,21 @@
-<h3>Main Menu</h3>
-<div class="example-button-row">
-  <button mat-fab color="primary">Users</button>
-  <button mat-fab color="accent">Roles</button>
-  <button mat-fab color="warn">Departaments</button>
+
+<div class=" = back-button" *ngIf="!onmain">
+  <button mat-raised-button color="accent" (click) ="OpenMain()">Go to Main Menu</button>
 </div>
+
+<div class="example-button-row" *ngIf="onmain">
+  <button mat-fab color="primary" (click)="OpenUsers()">Users</button>
+  <button mat-fab color="accent" (click)="OpenRoles()">Roles</button>
+  <button mat-fab color="warn" (click)="OpenDepts()">Departaments</button>
+</div>
+<div *ngIf ="onuser">
+  <app-form> </app-form>
+</div>
+<div *ngIf ="onrole">
+  <app-form-roles> </app-form-roles>
+</div>
+<div *ngIf ="ondept">
+  <app-form-dept></app-form-dept>
+</div>
+
+

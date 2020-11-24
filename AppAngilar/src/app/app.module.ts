@@ -18,13 +18,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormRolesComponent } from './form-roles/form-roles.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FormMainComponent } from './form-main/form-main.component';
+import { FormDeptComponent } from './form-dept/form-dept.component';
 //Можно ли все сылки Материалов в одну собрать? Модуль пдключить может быть?
 @NgModule({
   declarations: [
     AppComponent,
     FormComponent,
     FormRolesComponent,
-    FormMainComponent
+    FormMainComponent,
+    FormDeptComponent
   ],
   imports: [
     BrowserModule,

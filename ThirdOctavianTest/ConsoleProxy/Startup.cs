@@ -14,13 +14,14 @@ namespace ConsoleProxy
 
         public void ConfigureServices(IServiceCollection services)
         {
+            string[] adress = new[] { "http://localhost:4200", "http://192.168.0.103:4200" };
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy", builder => builder.WithOrigins("http://localhost:4200")
+                options.AddPolicy("CorsPolicy", builder => builder.WithOrigins(adress)
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());
-            });
+            });    
             services.AddSignalR();
         }
         public void Configure(IApplicationBuilder app)
