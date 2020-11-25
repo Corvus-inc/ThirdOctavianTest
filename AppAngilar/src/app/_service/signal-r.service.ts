@@ -3,6 +3,8 @@ import * as signalR from '@aspnet/signalr';
 import { User } from '../_interfaces/user';
 import { GetCommandDB } from '../_interfaces/get-command';
 import { ProcedureDB } from '../_interfaces/set-command';
+import { Role } from '../_interfaces/role';
+import { Dept } from '../_interfaces/dept';
 
 @Injectable({
   providedIn: 'root'
@@ -12,27 +14,46 @@ export class SignalRService {
   // Пройтись по всем  строкам проверить уровень доступности  свойств. Убрать лишнее.
   private hubConnection: signalR.HubConnection;
   public link: string;
-  public com: GetCommandDB;
   public us: User;
-  public data: User[];
+  public dataUser: User[];
+  public dataRole: Role[];
+  public dataDept: Dept[];
   public startConnection = () => {
     console.log('Work');
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('https://localhost:5001/MessageHub')
       .build();
-    this.com = GetCommandDB.GetAllUser;
     this.hubConnection
       .start()
       .then(() => { this.hubConnection.invoke('Send', "Message for stabile connection"); })
       .catch(err => console.log('Error while starting connection: ' + err));
   }
 
-  public addReceive = () => {
-    this.hubConnection.on('SetArray', (data) => {
-      this.data = data;
-      console.log(data);
-    });
+  public addArrayUsersListener = () => {
+    this.hubConnection.on('addArrayUsers', (dataUser) => {
+      this.dataUser = dataUser;});
   }
+  public addArrayRolesListener = () => {
+    this.hubConnection.on('addArrayRoles', (dataRole) => {
+      this.dataRole = dataRole;});
+  }
+  public addArrayDeptsListener = () => {
+    this.hubConnection.on('addArrayDepts', (dataDept) => {
+      this.dataDept = dataDept;});
+  }
+  public GetUsers = () => {
+    this.hubConnection.invoke('GetUsers')
+      .catch(err => console.error(err));
+  }
+  public GetRoles = () => {
+    this.hubConnection.invoke('GetRoles')
+      .catch(err => console.error(err));
+  }
+  public GetDepts = () => {
+    this.hubConnection.invoke('GetDepts')
+      .catch(err => console.error(err));
+  }
+
 
   public linkSet = () => {
     this.hubConnection.on('linkMethod', (link) => {

@@ -5,6 +5,8 @@ import { FormControl } from '@angular/forms';
 import { release } from 'os';
 import { element } from 'protractor';
 import { ProcedureDB } from '../_interfaces/set-command';
+import { Dept } from '../_interfaces/dept';
+import { Role } from '../_interfaces/role';
 
 
 @Component({
@@ -23,19 +25,22 @@ export class FormComponent implements OnInit {
 
   displayedColumns = ['login', 'password', 'role', 'departament'];
 
-  @Input() dataSource: User[];
+  @Input() userSource: User[];
+  @Input() deptSource: Dept[];
+  @Input() roleSource: Role[];
   @Input() service: SignalRService;
 
-  public elementSelect: User = { login: 'DefUser', password: '123', role: '', departament: '', departamentId: 3, id: 0, roleId: 3 };
+  public elementSelect: User = {loginpass: { key: 'Default', value: 'DaefaultPass' } , departamentid: 3, id: 0, roleid: 3
+  };
   constructor() { }
 
   ngOnInit(): void {
   }
   AddUser() {
-    console.log('Adduser');
-    this.service.linkSet();
-    this.service.SetUserDB(this.elementSelect, ProcedureDB.UserInsert)
-    this.service.addGetRequest();
+    console.log('Adduser'); console.log(this.service.dataUser);
+    //this.service.linkSet();
+    //this.service.SetUserDB(this.elementSelect, ProcedureDB.UserInsert)
+    //this.service.addGetRequest();
   
   }
   UpdateUser() {

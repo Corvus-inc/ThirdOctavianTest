@@ -22,9 +22,7 @@ namespace ServiceReference1
         
         private System.Nullable<int> IdField;
         
-        private string LoginField;
-        
-        private string PasswordField;
+        private System.Collections.Generic.KeyValuePair<string, string> LoginPassField;
         
         private int RoleIdField;
         
@@ -55,28 +53,15 @@ namespace ServiceReference1
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Login
+        public System.Collections.Generic.KeyValuePair<string, string> LoginPass
         {
             get
             {
-                return this.LoginField;
+                return this.LoginPassField;
             }
             set
             {
-                this.LoginField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Password
-        {
-            get
-            {
-                return this.PasswordField;
-            }
-            set
-            {
-                this.PasswordField = value;
+                this.LoginPassField = value;
             }
         }
         

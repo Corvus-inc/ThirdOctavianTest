@@ -18,13 +18,18 @@ export class FormMainComponent implements OnInit {
 
   ngOnInit(): void {
     this.signalRService.startConnection();
-    this.signalRService.addReceive();
+    this.signalRService.addArrayUsersListener();
+    this.signalRService.addArrayDeptsListener();
+    this.signalRService.addArrayRolesListener();
   }
   OpenUsers() {
     this.onuser = true;
     this.onmain = false;
-    this.signalRService.addGetRequest();
-    this.dataSource = this.signalRService.data;
+    this.signalRService.GetUsers();
+    this.signalRService.GetRoles();
+    this.signalRService.GetDepts();
+
+    
   }
   OpenRoles() {
     this.onrole = true;
@@ -34,6 +39,7 @@ export class FormMainComponent implements OnInit {
   OpenDepts() {
     this.ondept = true;
     this.onmain = false;
+
   }
   OpenMain() {
     this.onmain = true;

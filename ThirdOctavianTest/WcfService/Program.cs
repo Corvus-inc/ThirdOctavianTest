@@ -98,18 +98,20 @@ namespace WcfService
                     {   users = new List<User>();
                         User u;
                         DataTable tableData = data.Tables[0];
+                        string Login;
+                        string Pass;
                         for (int i = 0; i < tableData.Rows.Count; i++)
                         {
                             u = new User();
                            
                             if (!tableData.Rows[i].ItemArray[0].Equals(DBNull.Value)) u.Id = (int)tableData.Rows[i].ItemArray[0];
                             else u.Id = tableData.Rows.Count + 1;
+                            
+                            if (!tableData.Rows[i].ItemArray[1].Equals(DBNull.Value)) Login = (string)tableData.Rows[i].ItemArray[1];
+                            else Login = string.Empty;
 
-                            if (!tableData.Rows[i].ItemArray[1].Equals(DBNull.Value)) u.Login = (string)tableData.Rows[i].ItemArray[1];
-                            else u.Login = null;
-
-                            if (!tableData.Rows[i].ItemArray[2].Equals(DBNull.Value)) u.Password = (string)tableData.Rows[i].ItemArray[2];
-                            else u.Password = null;
+                            if (!tableData.Rows[i].ItemArray[2].Equals(DBNull.Value)) Pass = (string)tableData.Rows[i].ItemArray[2];
+                            else Pass = string.Empty;
 
                             if (!tableData.Rows[i].ItemArray[3].Equals(DBNull.Value)) u.DepartamentId = (int)tableData.Rows[i].ItemArray[3];
                             else u.DepartamentId = 0;
@@ -117,6 +119,7 @@ namespace WcfService
                             if (!tableData.Rows[i].ItemArray[4].Equals(DBNull.Value)) u.RoleId = (int)tableData.Rows[i].ItemArray[4];
                             else u.RoleId = 0;
 
+                            u.LoginPass = new KeyValuePair<string, string>(Login, Pass);
                             users.Add(u);
                         }
                     }
@@ -190,16 +193,16 @@ namespace WcfService
             {
                 case ProcedureDB.UserInsert:
                     ProcedureString = $"Call User_Insert(" +
-                    $"'{uDetails.Login}'," +
-                    $"'{uDetails.Password}'," +
+                    $"'{uDetails.LoginPass.Key}'," +
+                    $"'{uDetails.LoginPass.Value}'," +
                     $"{uDetails.RoleId}," +
                     $"{uDetails.DepartamentId})";
                     break;
                 case ProcedureDB.UserUpdate:
                     ProcedureString = $"Call User_Update(" +
                     $"'{uDetails.Id}'," +
-                    $"'{uDetails.Login}'," +
-                    $"'{uDetails.Password}'," +
+                    $"'{uDetails.LoginPass.Key}'," +
+                    $"'{uDetails.LoginPass.Value}'," +
                     $"'{uDetails.RoleId}'," +
                     $"'{uDetails.DepartamentId}')";
                     break;

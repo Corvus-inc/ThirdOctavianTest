@@ -12,16 +12,14 @@ namespace ConsoleProxy
     {
         static void Main(string[] args)
         {
-            ListOfUserServiceClient client = new ListOfUserServiceClient();
-            var resultDep = client.GetRolesAsync().Result;
-            foreach (var item in resultDep)
-            {
-                Console.WriteLine(item.Name);
-            }
-            Console.ReadKey();
+            //ListOfUserServiceClient client = new ListOfUserServiceClient();
+            //var resultDep = client.GetUsersAsync().Result;
+            //foreach (var item in resultDep)
+            //{
+            //    Console.WriteLine(item.LoginPass);
+            //}
+            //Console.ReadKey();
             CreateDefaultBuilder(args).Build().Run();
-
-            
         }
 
         private static IWebHostBuilder CreateDefaultBuilder(string[] args) =>
