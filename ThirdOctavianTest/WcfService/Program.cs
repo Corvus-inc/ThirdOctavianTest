@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.Text;
@@ -18,53 +17,12 @@ namespace WcfService
         [OperationContract]
         void SetUserDetails(User uDetails, ProcedureDB nameProcedure);
         [OperationContract]
-        List<User> GetUserDetails(GetCommandDB cmdRequest);
+        List<User> GetUsers();
+        [OperationContract]
+        List<Role> GetRoles();
+        [OperationContract]
+        List<Dept> GetDepts();
         //Авторизация определяется в контракте?
-    }
-    [DataContract]
-    public class User
-    {
-        int? uId;
-        string uLogin = string.Empty;
-        string uPassword = string.Empty;
-        int? uRoleId;
-        string uRole = string.Empty;
-        int? uDepartamentId;
-        string uDepartament = string.Empty;
-        [DataMember]
-        public int? Id { get; set; }
-        [DataMember]
-        public string Login { get; set; }
-        [DataMember]
-        public string Password { get; set; }
-        [DataMember]
-        public int RoleId { get; set; }
-        [DataMember]
-        public string Role { get; set; }
-        [DataMember]
-        public int DepartamentId { get; set; }
-        [DataMember]
-        public string Departament { get; set; }
-
-    }
-
-    public enum ProcedureDB
-    {
-        UserInsert,
-        RoleInsert,
-        DeptInsert,
-        UserUpdate,
-        RoleUpdate,
-        DeptUpdate,
-        UserDelete,
-        RoleDelete,
-        DeptDelete,
-    }
-    public enum GetCommandDB
-    {
-        GetAllUser,
-        GetAllRole,
-        GetAllDept,
     }
 
     public class ListOfUser : IListOfUserService
@@ -83,16 +41,38 @@ namespace WcfService
                 }
             }
         }
-        public List<User> GetUserDetails(GetCommandDB cmdRequest)
+        public List<User> GetUsers()
         {
-            DataSet ds;
-            List<User> listU = new List<User>();
+            ConnectToGetRequest(GetCommandDB.GetAllUser);
+            return users;
+        }
 
+        public List<Role> GetRoles()
+        {
+            ConnectToGetRequest(GetCommandDB.GetAllRole);
+            return roles;
+        }
+
+        public List<Dept> GetDepts()
+        {
+            ConnectToGetRequest(GetCommandDB.GetAllDept);
+            return depts;
+        }
+
+        private GetCommandDB dataInfo;
+        private List<Role> roles;
+        private List<Dept> depts;
+        private List<User> users;
+        private DataSet data;
+        DataTable tableData;
+        private void ConnectToGetRequest(GetCommandDB typeList)
+        {
+            string scmd = GetCommandDBString(typeList);
             using (var con = new NpgsqlConnection(connectionString))
             {
 
                 con.Open();
-                using (var cmd = new NpgsqlCommand(GetCommandDBString(cmdRequest), con))
+                using (var cmd = new NpgsqlCommand(scmd, con))
                 {
                     //cmd.CommandType = CommandType.StoredProcedure;
 
@@ -101,78 +81,108 @@ namespace WcfService
                         con.Open();
                     }
                     NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
-                    ds = new DataSet();
-                    da.Fill(ds);
+                    data = new DataSet();
+                    da.Fill(data);
                     cmd.ExecuteNonQuery();
                     con.Close();
-                    listU = UnpackDataToList(ds);
+                    UnpackDataToList(data, dataInfo);
                 }
             }
-            return listU;
         }
-        //Метод жестко привязан к таблице, любые изменения в названиях и колонках приведут к поломке.
-        private List<User> UnpackDataToList(DataSet data)
+        //Метод жестко привязан к таблице, любые изменения в названиях и колонках приведут к поломке. Ихменяя таблицу нужно изменять этот метод.
+        private void UnpackDataToList(DataSet data, GetCommandDB dataInfo)
         {
-            List<User> users;
-            User u;
-            DataTable tableU = data.Tables[0];
-            users = new List<User>(tableU.Rows.Count);
-            for (int i = 0; i < tableU.Rows.Count; i++)
+            switch (dataInfo)
             {
-                u = new User();
+                case GetCommandDB.GetAllUser:
+                    {   users = new List<User>();
+                        User u;
+                        DataTable tableData = data.Tables[0];
+                        for (int i = 0; i < tableData.Rows.Count; i++)
+                        {
+                            u = new User();
+                           
+                            if (!tableData.Rows[i].ItemArray[0].Equals(DBNull.Value)) u.Id = (int)tableData.Rows[i].ItemArray[0];
+                            else u.Id = tableData.Rows.Count + 1;
 
-                if (!tableU.Rows[i].ItemArray[0].Equals(DBNull.Value)) u.Id = (int)tableU.Rows[i].ItemArray[0];
-                else u.Id = tableU.Rows.Count+1;
+                            if (!tableData.Rows[i].ItemArray[1].Equals(DBNull.Value)) u.Login = (string)tableData.Rows[i].ItemArray[1];
+                            else u.Login = null;
 
-                if (!tableU.Rows[i].ItemArray[1].Equals(DBNull.Value)) u.Login = (string)tableU.Rows[i].ItemArray[1];
-                else u.Login = null;
+                            if (!tableData.Rows[i].ItemArray[2].Equals(DBNull.Value)) u.Password = (string)tableData.Rows[i].ItemArray[2];
+                            else u.Password = null;
 
-                if (!tableU.Rows[i].ItemArray[2].Equals(DBNull.Value)) u.Password = (string)tableU.Rows[i].ItemArray[2];
-                else u.Password = null;
+                            if (!tableData.Rows[i].ItemArray[3].Equals(DBNull.Value)) u.DepartamentId = (int)tableData.Rows[i].ItemArray[3];
+                            else u.DepartamentId = 0;
 
-                if (!tableU.Rows[i].ItemArray[3].Equals(DBNull.Value)) u.DepartamentId = (int)tableU.Rows[i].ItemArray[3];
-                else u.DepartamentId = 0;
+                            if (!tableData.Rows[i].ItemArray[4].Equals(DBNull.Value)) u.RoleId = (int)tableData.Rows[i].ItemArray[4];
+                            else u.RoleId = 0;
 
-                if (!tableU.Rows[i].ItemArray[4].Equals(DBNull.Value)) u.RoleId = (int)tableU.Rows[i].ItemArray[4];
-                else u.RoleId = 0;
+                            users.Add(u);
+                        }
+                    }
+                    break;
+                case GetCommandDB.GetAllDept:
+                    {
+                        depts = new List<Dept>();
+                        Dept d;
+                        tableData = data.Tables[0];
+                        for (int i = 0; i < tableData.Rows.Count; i++)
+                        {
+                            d = new Dept();
+                            if (!tableData.Rows[i].ItemArray[0].Equals(DBNull.Value)) d.Id = (int)tableData.Rows[i].ItemArray[0];
+                            else d.Id = tableData.Rows.Count + 1;
 
-                if (!tableU.Rows[i].ItemArray[5].Equals(DBNull.Value)) u.Departament = (string)tableU.Rows[i].ItemArray[5];
-                else u.Departament = null;
+                            if (!tableData.Rows[i].ItemArray[1].Equals(DBNull.Value)) d.Name = (string)tableData.Rows[i].ItemArray[1];
+                            else d.Name = null;
 
-                if (!tableU.Rows[i].ItemArray[6].Equals(DBNull.Value)) u.Role = (string)tableU.Rows[i].ItemArray[6];
-                else u.Role = null;
+                            depts.Add(d);
+                        }
+                    }
+                    break;
+                case GetCommandDB.GetAllRole:
+                    {
+                        roles = new List<Role>();
+                        Role r;
+                        tableData = data.Tables[0];
+                        for (int i = 0; i < tableData.Rows.Count; i++)
+                        {
+                            r = new Role();
+                            if (!tableData.Rows[i].ItemArray[0].Equals(DBNull.Value)) r.Id = (int)tableData.Rows[i].ItemArray[0];
+                            else r.Id = tableData.Rows.Count + 1;
 
-                users.Add(u);
+                            if (!tableData.Rows[i].ItemArray[1].Equals(DBNull.Value)) r.Name = (string)tableData.Rows[i].ItemArray[1];
+                            else r.Name = null;
+
+                            roles.Add(r);
+                        }
+                    }
+                        break;
+
             }
-
-
-            return users;
         }
-
+        //Возвращает строку команды получения значений из БД
         private string GetCommandDBString(GetCommandDB cmdRequest)
         {
             string cmd = string.Empty;
             switch (cmdRequest)
             {
                 case GetCommandDB.GetAllUser:
-                    cmd = "Select U.Id, U.login, U.password, U.deptid, U.roleid, D.name, R.Name" +
-                        "    From users U" +
-                        "    Left Join roles R" +
-                        "    On U.roleid = R.id" +
-                        "    Left Join depts D" +
-                        "    On U.deptid = D.Id";
+                    cmd = "SELECT * FROM users ";
+                    dataInfo = cmdRequest;
                     break;
                 case GetCommandDB.GetAllDept:
-
+                    cmd = "SELECT * FROM depts ";
+                    dataInfo = cmdRequest;
                     break;
                 case GetCommandDB.GetAllRole:
-
+                    cmd = "SELECT * FROM roles ";
+                    dataInfo = cmdRequest;
                     break;
 
             }
             return cmd;
         }
-
+        //В Базе сознданы процедуры строки с обращением к которым собираются тут. Процедуры не возвращают значения. Стоит пересмотреть подход.
         private string CallProcedureString(User uDetails, ProcedureDB nameProcedure)
         {
             string ProcedureString = string.Empty;
@@ -218,17 +228,19 @@ namespace WcfService
             }
             return ProcedureString;
         }
+
+        
     }
     class Program
     {
         static void Main(string[] args)
         {
-            ListOfUser list = new ListOfUser();
+            //ListOfUser list = new ListOfUser();
             //User added = new User() { Departament = "", Role = "", Password = "Rick@", Login = "Mortimer", DepartamentId = 2, RoleId = 1, Id = 1 };
             //list.SetUserDetails(added, ProcedureDB.UserInsert);
             ////string u = list.UpdateUserDetails(added);
             ////bool d = list.DeleteUserDetails(added);
-            List<User> f = list.GetUserDetails(GetCommandDB.GetAllUser);
+            //List<User> f = list.GetUserDetails(GetCommandDB.GetAllUser);
             ////string s = list.InsertUserDetails(added);
             //DataTable dataTable = f.Tables[0];
             //Console.WriteLine(dataTable.Columns[3].ColumnName);

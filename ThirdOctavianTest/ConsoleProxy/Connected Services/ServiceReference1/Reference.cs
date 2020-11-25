@@ -18,8 +18,6 @@ namespace ServiceReference1
     public partial class User : object
     {
         
-        private string DepartamentField;
-        
         private int DepartamentIdField;
         
         private System.Nullable<int> IdField;
@@ -28,22 +26,7 @@ namespace ServiceReference1
         
         private string PasswordField;
         
-        private string RoleField;
-        
         private int RoleIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Departament
-        {
-            get
-            {
-                return this.DepartamentField;
-            }
-            set
-            {
-                this.DepartamentField = value;
-            }
-        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int DepartamentId
@@ -98,19 +81,6 @@ namespace ServiceReference1
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Role
-        {
-            get
-            {
-                return this.RoleField;
-            }
-            set
-            {
-                this.RoleField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public int RoleId
         {
             get
@@ -157,19 +127,78 @@ namespace ServiceReference1
         DeptDelete = 8,
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="GetCommandDB", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
-    public enum GetCommandDB : int
+    [System.Runtime.Serialization.DataContractAttribute(Name="Role", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    public partial class Role : object
     {
         
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        GetAllUser = 0,
+        private int IdField;
         
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        GetAllRole = 1,
+        private string NameField;
         
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        GetAllDept = 2,
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id
+        {
+            get
+            {
+                return this.IdField;
+            }
+            set
+            {
+                this.IdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name
+        {
+            get
+            {
+                return this.NameField;
+            }
+            set
+            {
+                this.NameField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Dept", Namespace="http://schemas.datacontract.org/2004/07/WcfService")]
+    public partial class Dept : object
+    {
+        
+        private int IdField;
+        
+        private string NameField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id
+        {
+            get
+            {
+                return this.IdField;
+            }
+            set
+            {
+                this.IdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name
+        {
+            get
+            {
+                return this.NameField;
+            }
+            set
+            {
+                this.NameField = value;
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
@@ -180,8 +209,14 @@ namespace ServiceReference1
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/SetUserDetails", ReplyAction="http://tempuri.org/IListOfUserService/SetUserDetailsResponse")]
         System.Threading.Tasks.Task SetUserDetailsAsync(ServiceReference1.User uDetails, ServiceReference1.ProcedureDB nameProcedure);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/GetUserDetails", ReplyAction="http://tempuri.org/IListOfUserService/GetUserDetailsResponse")]
-        System.Threading.Tasks.Task<ServiceReference1.User[]> GetUserDetailsAsync(ServiceReference1.GetCommandDB cmdRequest);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/GetUsers", ReplyAction="http://tempuri.org/IListOfUserService/GetUsersResponse")]
+        System.Threading.Tasks.Task<ServiceReference1.User[]> GetUsersAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/GetRoles", ReplyAction="http://tempuri.org/IListOfUserService/GetRolesResponse")]
+        System.Threading.Tasks.Task<ServiceReference1.Role[]> GetRolesAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/GetDepts", ReplyAction="http://tempuri.org/IListOfUserService/GetDeptsResponse")]
+        System.Threading.Tasks.Task<ServiceReference1.Dept[]> GetDeptsAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
@@ -239,9 +274,19 @@ namespace ServiceReference1
             return base.Channel.SetUserDetailsAsync(uDetails, nameProcedure);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference1.User[]> GetUserDetailsAsync(ServiceReference1.GetCommandDB cmdRequest)
+        public System.Threading.Tasks.Task<ServiceReference1.User[]> GetUsersAsync()
         {
-            return base.Channel.GetUserDetailsAsync(cmdRequest);
+            return base.Channel.GetUsersAsync();
+        }
+        
+        public System.Threading.Tasks.Task<ServiceReference1.Role[]> GetRolesAsync()
+        {
+            return base.Channel.GetRolesAsync();
+        }
+        
+        public System.Threading.Tasks.Task<ServiceReference1.Dept[]> GetDeptsAsync()
+        {
+            return base.Channel.GetDeptsAsync();
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

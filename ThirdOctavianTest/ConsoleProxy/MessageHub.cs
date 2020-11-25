@@ -9,11 +9,11 @@ namespace ConsoleProxy
 {
     public class MessageHub : Hub
     {
-        public async Task GetRequest(GetCommandDB GetAllUser)
+        public async Task GetRequest()
         {
             ListOfUserServiceClient client = new ListOfUserServiceClient();
 
-            var resultList = client.GetUserDetailsAsync(GetAllUser).Result;
+            var resultList = client.GetUsersAsync().Result;
             Console.WriteLine(resultList[0].Login);
             await Clients.All.SendAsync("SetArray", resultList);
         }

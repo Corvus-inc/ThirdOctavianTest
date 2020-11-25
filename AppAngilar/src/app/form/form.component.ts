@@ -17,29 +17,25 @@ export class FormComponent implements OnInit {
   displayedDepts: string[] = ['Dept1', 'Dept2', 'Dept3', 'Dept4'];//Заменить на ссылку в базу
 
   hide = true;
-  isselected =  true;
 
+  isselected =  true;
   inputLogin: string;
 
   displayedColumns = ['login', 'password', 'role', 'departament'];
+
   @Input() dataSource: User[];
+  @Input() service: SignalRService;
+
   public elementSelect: User = { login: 'DefUser', password: '123', role: '', departament: '', departamentId: 3, id: 0, roleId: 3 };
-  constructor(/*public signalRService: SignalRService*/) { }
+  constructor() { }
 
   ngOnInit(): void {
-    //this.signalRService.startConnection();
-    //this.signalRService.addReceive();
-    //Во время инициализации .invoke() метод не могу задействовать. Выводит ошибку в консоль, о том, что не создано подключение. Полагаю, асинхронное выполнение на стороне сервера так влияет.
-    //Также, во время OnInit метод .on() болезненно добавляет методы возврата данных, тем самым при каждой активации компонента происходит захламление списка методов на сервере.
-    // Необходимо куда-то вынести эти свойства.
-    //Вынести все подключение на главный экран. НА главном экране все жанные загрузить, а потом передавть их в другие компонент?
-
-    
   }
   AddUser() {
     console.log('Adduser');
-    //this.signalRService.linkSet();
-    //this.signalRService.SetUserDB(this.elementSelect, ProcedureDB.UserInsert)
+    this.service.linkSet();
+    this.service.SetUserDB(this.elementSelect, ProcedureDB.UserInsert)
+    this.service.addGetRequest();
   
   }
   UpdateUser() {
