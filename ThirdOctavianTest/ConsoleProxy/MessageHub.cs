@@ -10,9 +10,9 @@ namespace ConsoleProxy
     public class MessageHub : Hub
     {
         public async Task GetUsers()
-        {Console.WriteLine("WCF START");
+        {
             ListOfUserServiceClient client = new ListOfUserServiceClient();
-            
+            Console.WriteLine("WCF START");
             var resultList = client.GetUsersAsync().Result;
             await Clients.All.SendAsync("addArrayUsers", resultList);
         }
@@ -28,7 +28,7 @@ namespace ConsoleProxy
             ListOfUserServiceClient client = new ListOfUserServiceClient();
 
             var resultList = client.GetDeptsAsync().Result;
-            await Clients.All.SendAsync("addArrayRoles", resultList);
+            await Clients.All.SendAsync("addArrayDepts", resultList);
         }
 
         public async Task SetRequest(User userDetails, ProcedureDB SetCommand)

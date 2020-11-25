@@ -2,7 +2,7 @@
 
 <div class="example-container mat-elevation-z8">
   <table mat-table
-         [dataSource]="userSource">
+         [dataSource]="this.tableUsers">
 
     Position Column
     <ng-container matColumnDef="login">
@@ -10,9 +10,8 @@
           *matHeaderCellDef>
         Login
       </th>
-      <td mat-cell
-          *matCellDef="let element">
-        {{element.loginPass.Key}}
+      <td mat-cell *matCellDef="let element">
+        {{element.Login}}
       </td>
     </ng-container>
 
@@ -24,7 +23,7 @@
       </th>
       <td mat-cell
           *matCellDef="let element">
-        {{element.loginPass.Value}}
+        {{element.Pass}}
       </td>
     </ng-container>
 
@@ -36,7 +35,8 @@
       </th>
       <td mat-cell
           *matCellDef="let element">
-        {{element.roleId}}
+        
+        {{element.Role}}
       </td>
     </ng-container>
 
@@ -48,7 +48,7 @@
       </th>
       <td mat-cell
           *matCellDef="let element">
-        {{element.departamentId}}
+        {{element.Dept}}
       </td>
     </ng-container>
 
@@ -60,41 +60,41 @@
     </tr>
   </table>
 </div>
-<!--<form class="example-form">--><!--// Наличие этой строки заставляло страницу перезагружаться при нажатии на любую кнопку в компоненте. Не ясное мне событие. Нужно будет разобраться. Не нашел пока даже откуда взялась жта строка.-->
-<!--<div class="example-container-fields">
+<!--<form class="example-form">// Наличие этой строки заставляло страницу перезагружаться при нажатии на любую кнопку в компоненте. Не ясное мне событие. Нужно будет разобраться. Не нашел пока даже откуда взялась жта строка.-->
+<div class="example-container-fields">
   <mat-form-field appearance="fill">
     <mat-label>Login</mat-label>
     <input (input)="InputStringSave($event)"
            matInput placeholder="Enter your username"
-           value="{elementSelect.login}}">
+           value=" {{elementSelect.Login}}">
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Enter your password</mat-label>
     <input matInput [type]="hide ? 'password' : 'text'"
-           value="{elementSelect.password}}">
+           value="{{elementSelect.Pass}}">
     <button mat-icon-button
             matSuffix
             (click)="hide = !hide"
             [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hide">
-      <mat-icon>{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Role</mat-label>
-    <mat-select value="{elementSelect.role}}">
+    <mat-select value="{{elementSelect.Role}}">
       <mat-option *ngFor="let role of displayedRoles"
-                  [value]="role">{role}}</mat-option>
+                  [value]="role">{{role}}</mat-option>
     </mat-select>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Departament</mat-label>
-    <mat-select value="{elementSelect.departament}}">
+    <mat-select value="{{elementSelect.Dept}}">
       <mat-option *ngFor="let dept of displayedDepts"
-                  [value]="dept">{dept}}</mat-option>
+                  [value]="dept">{{dept}}</mat-option>
     </mat-select>
   </mat-form-field>
 </div>
@@ -119,13 +119,7 @@
 </div>
 <mat-card class="card-user">
   <p>Select User</p>
-  <p>Login User: {elementSelect.login}}</p>
-  <p>Role User: {elementSelect.role}}</p>
-  <p>Dept User: {elementSelect.departament}}</p>
-
-</mat-card>-->
-<button mat-raised-button
-        color="accent"
-        (click)="AddUser()">
-  Add User
-</button>
+  <p>Login User: {{elementSelect.Login}}</p>
+  <p>Role User: {{elementSelect.Role}}</p>
+  <p>Dept User: {{elementSelect.Dept}}</p>
+</mat-card>

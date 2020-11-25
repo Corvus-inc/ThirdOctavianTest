@@ -19,10 +19,5 @@ namespace WcfService
         public int RoleId { get; set; }
         [DataMember]
         public int DepartamentId { get; set; }
-         public void Test()
-        {
-            LoginPass = new KeyValuePair<string, string>();
-            
-        }
     }
 }

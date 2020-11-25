@@ -1,8 +1,8 @@
-import { KeyValue } from '@angular/common';
+import { KeyValue } from './key-value';
 
 export interface User {
   id: number;
-  loginpass: KeyValue<string, string>;
-  roleid: number;
-  departamentid: number;
+  loginPass: KeyValue<string, string>;
+  roleId: number;
+  departamentId: number;
 }

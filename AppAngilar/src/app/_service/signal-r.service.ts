@@ -11,7 +11,6 @@ import { Dept } from '../_interfaces/dept';
 })
 export class SignalRService {
   // Именование свойств в TypeScript начинаются со строчной буквы. Видимо, не просто так. Не запутаться....
-  // Пройтись по всем  строкам проверить уровень доступности  свойств. Убрать лишнее.
   private hubConnection: signalR.HubConnection;
   public link: string;
   public us: User;
@@ -31,7 +30,10 @@ export class SignalRService {
 
   public addArrayUsersListener = () => {
     this.hubConnection.on('addArrayUsers', (dataUser) => {
-      this.dataUser = dataUser;});
+      this.dataUser = dataUser;
+      console.log(this.dataUser);
+    });
+
   }
   public addArrayRolesListener = () => {
     this.hubConnection.on('addArrayRoles', (dataRole) => {
@@ -39,7 +41,10 @@ export class SignalRService {
   }
   public addArrayDeptsListener = () => {
     this.hubConnection.on('addArrayDepts', (dataDept) => {
-      this.dataDept = dataDept;});
+      this.dataDept = dataDept;
+      console.log(this.dataDept)
+    });
+
   }
   public GetUsers = () => {
     this.hubConnection.invoke('GetUsers')

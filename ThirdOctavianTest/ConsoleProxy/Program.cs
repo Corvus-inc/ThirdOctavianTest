@@ -13,10 +13,10 @@ namespace ConsoleProxy
         static void Main(string[] args)
         {
             //ListOfUserServiceClient client = new ListOfUserServiceClient();
-            //var resultDep = client.GetUsersAsync().Result;
+            //var resultDep = client.GetDeptsAsync().Result;
             //foreach (var item in resultDep)
             //{
-            //    Console.WriteLine(item.LoginPass);
+            //    Console.WriteLine(item.Name);
             //}
             //Console.ReadKey();
             CreateDefaultBuilder(args).Build().Run();

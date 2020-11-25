@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SignalRService } from './_service/signal-r.service';
 
 
 @Component({
@@ -7,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'AppAngilar';
+ constructor(public signalRService: SignalRService) { }
+  title = 'AppAngular';
 }
