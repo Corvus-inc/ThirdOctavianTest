@@ -1,10 +1,36 @@
-<p>form-dept works!</p>
-<mat-selection-list #shoes [multiple]="false">
-  <mat-list-option *ngFor="let dept of service.displayedDepts" [value]="dept">
+<mat-selection-list #depts [multiple]="false">
+  <mat-list-option *ngFor="let dept of service.displayedDepts"
+                   [value]="dept"
+                   (click) ="SelectDept(dept)">
     {{dept}}
   </mat-list-option>
 </mat-selection-list>
 
 <p>
-  Option selected: {{shoes.selectedOptions.selected[0]?.value}}
+  <mat-form-field appearance="fill">
+    <mat-label>Departament</mat-label>
+    <input matInput placeholder="Enter new Departament"
+           (input)="InputStringSave($event)"
+           value="{{depts.selectedOptions.selected[0]?.value}}">
+  </mat-form-field>
 </p>
+
+<div>
+  <button mat-raised-button
+          color="warn"
+          (click)="Add()">
+    Add Departament
+  </button>
+  <button disabled="{{ !isselected}}"
+          mat-raised-button
+          color="warn"
+          (click)="Update()">
+    Update Departament
+  </button>
+  <button disabled="{{ !isselected}}"
+          (click)="Delete()"
+          mat-raised-button
+          color="warn">
+    Delete Departament
+  </button>
+</div>

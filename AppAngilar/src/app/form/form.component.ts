@@ -11,7 +11,7 @@ import { UserDetails } from './user-details';
 export class FormComponent{
   @Input() service: SignalRService;
   hide = true;
-  isselected = true;
+  isselected = false;
   inputLogin: string;
   displayedColumns = ['login', 'password', 'role', 'departament'];
   elementSelect: UserDetails = { id: 0, Login: '', Pass: '', Dept: '', Role: '' }

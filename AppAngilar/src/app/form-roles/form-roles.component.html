@@ -1,1 +1,35 @@
-<h3>Form Role</h3>
+<mat-selection-list #roles [multiple]="false">
+  <mat-list-option *ngFor="let role of service.displayedRoles"
+                   [value]="role"
+                   (click) ="SelectRole(role)">
+    {{role}}
+  </mat-list-option>
+</mat-selection-list>
+<p>
+  <mat-form-field appearance="fill">
+    <mat-label>Role</mat-label>
+    <input matInput placeholder="Enter new Role"
+           (input)="InputStringSave($event)"
+           value="{{roles.selectedOptions.selected[0]?.value}}">
+  </mat-form-field>
+</p>
+
+<div>
+  <button mat-raised-button
+         color="accent"
+          (click)="Add()">
+    Add Role
+  </button>
+  <button disabled="{{ !isselected}}"
+          mat-raised-button
+          color="accent"
+          (click)="Update()">
+    Update Role
+  </button>
+  <button disabled="{{ !isselected}}"
+          (click)="Delete()"
+          mat-raised-button
+          color="accent">
+    Delete Role
+  </button>
+</div>

@@ -25,7 +25,7 @@ export class FormMainComponent implements OnInit {
     this.ondept = false;
   }
   OpenUsers() {
-     this.signalRService.GetUsers();
+    this.signalRService.GetUsers();
     this.signalRService.GetRoles();
     this.signalRService.GetDepts();
 
@@ -36,7 +36,6 @@ export class FormMainComponent implements OnInit {
     this.signalRService.GetRoles();
     this.onrole = true;
     this.onmain = false;
-
   }
   OpenDepts() {
     this.signalRService.GetDepts();

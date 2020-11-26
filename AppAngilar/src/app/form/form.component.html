@@ -102,13 +102,13 @@
           (click)="AddUser()">
     Add User
   </button>
-  <button disabled="{{!isselected}}"
+  <button disabled="{{ !isselected}}"
           mat-raised-button
           color="primary"
           (click)="UpdateUser()">
     Update User
   </button>
-  <button disabled="{{!isselected}}"
+  <button disabled="{{ !isselected}}"
           (click)="DeleteUser()"
           mat-raised-button
           color="primary">

@@ -47,10 +47,9 @@ export class SignalRService {
   }
   public addArrayDeptsListener = () => {
     this.hubConnection.on('addArrayDepts', (dataDept) => {
-      this.dataDept = dataDept;
-      this.UpdateUserDetails()
+      this.dataDept = dataDept; 
+      this.UpdateUserDetails();
       this.GeneratedStringsDepts();
-
     });
   }
   public GetUsers = () => {
@@ -65,6 +64,7 @@ export class SignalRService {
     this.hubConnection.invoke('GetDepts')
       .catch(err => console.error(err));
   }
+
   public linkSet = () => {
     this.hubConnection.on('linkMethod', (link) => {
       this.link = link;
@@ -81,31 +81,33 @@ export class SignalRService {
   }
 
   UpdateUserDetails() {
-    this.tableUsers = new Array(this.dataUser.length);
-    for (var _i = 0; _i < this.dataUser.length; _i++) {
-      var ud: UserDetails = new UserDetails();
-      ud.id = this.dataUser[_i].id;
-      ud.Login = this.dataUser[_i].loginPass.Key;
-      ud.Pass = this.dataUser[_i].loginPass.Value;
-      if (this.dataDept != null) {
-        for (let d of this.dataDept) {
-          if (d.id == this.dataUser[_i].departamentId) {
-            ud.Dept = d.name;
-            break;
+    if (this.dataUser != null) {
+      this.tableUsers = new Array(this.dataUser.length);
+      for (var _i = 0; _i < this.dataUser.length; _i++) {
+        var ud: UserDetails = new UserDetails();
+        ud.id = this.dataUser[_i].id;
+        ud.Login = this.dataUser[_i].loginPass.Key;
+        ud.Pass = this.dataUser[_i].loginPass.Value;
+        if (this.dataDept != null) {
+          for (let d of this.dataDept) {
+            if (d.id == this.dataUser[_i].departamentId) {
+              ud.Dept = d.name;
+              break;
+            }
+            else ud.Dept = 'NoDepartament';
           }
-          else ud.Dept = 'NoDepartament';
         }
-      }
-      if (this.dataDept != null) {
-        for (let r of this.dataRole) {
-          if (r.id == this.dataUser[_i].roleId) {
-            ud.Role = r.name;
-            break;
+        if (this.dataDept != null) {
+          for (let r of this.dataRole) {
+            if (r.id == this.dataUser[_i].roleId) {
+              ud.Role = r.name;
+              break;
+            }
+            else ud.Role = 'NoRole';
           }
-          else ud.Role = 'NoRole';
         }
+        this.tableUsers[_i] = ud;
       }
-      this.tableUsers[_i] = ud;
     }
   }
   GeneratedStringsDepts() {
