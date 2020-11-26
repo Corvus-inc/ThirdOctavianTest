@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SignalRService } from '../_service/signal-r.service';
-import { User } from '../_interfaces/user';
 
 @Component({
   selector: 'app-form-roles',
@@ -8,8 +7,8 @@ import { User } from '../_interfaces/user';
   styleUrls: ['./form-roles.component.css']
 })
 export class FormRolesComponent implements OnInit {
-    
-  constructor() { }
+
+  @Input() service: SignalRService;
 
   ngOnInit(): void {
    

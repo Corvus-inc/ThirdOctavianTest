@@ -1,1 +1,10 @@
 <p>form-dept works!</p>
+<mat-selection-list #shoes [multiple]="false">
+  <mat-list-option *ngFor="let dept of service.displayedDepts" [value]="dept">
+    {{dept}}
+  </mat-list-option>
+</mat-selection-list>
+
+<p>
+  Option selected: {{shoes.selectedOptions.selected[0]?.value}}
+</p>

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { SignalRService } from '../_service/signal-r.service';
 
 @Component({
   selector: 'app-form-dept',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FormDeptComponent implements OnInit {
 
-  constructor() { }
+  @Input() service: SignalRService;
 
   ngOnInit(): void {
   }
