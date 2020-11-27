@@ -12,14 +12,12 @@ namespace ConsoleProxy
         public async Task GetUsers()
         {
             ListOfUserServiceClient client = new ListOfUserServiceClient();
-            Console.WriteLine("WCF START");
             var resultList = client.GetUsersAsync().Result;
             await Clients.All.SendAsync("addArrayUsers", resultList);
         }
         public async Task GetRoles()
         {
             ListOfUserServiceClient client = new ListOfUserServiceClient();
-
             var resultList = client.GetRolesAsync().Result;
             await Clients.All.SendAsync("addArrayRoles", resultList);
         } 

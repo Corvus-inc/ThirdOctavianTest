@@ -15,11 +15,11 @@ namespace WcfService
     public interface IListOfUserService
     {
         [OperationContract]
-        void SetDetails(User uDetails, ProcedureDB nameProcedure);
+        void SetUserDetails(User uDetails, ProcedureDB nameProcedure);
         [OperationContract]
-        void SetDetails(Role rDetailsDetails, ProcedureDB nameProcedure);
+        void SetRoleDetails(Role rDetailsDetails, ProcedureDB nameProcedure);
         [OperationContract]
-        void SetDetails(Dept dDetails, ProcedureDB nameProcedure);
+        void SetDeptDetails(Dept dDetails, ProcedureDB nameProcedure);
         [OperationContract]
         List<User> GetUsers();
         [OperationContract]
@@ -33,17 +33,17 @@ namespace WcfService
     {
         static string connectionString = "Host=localhost;Database=Corvus;Username=postgres;Persist Security Info=True;Password=pa$$word;";
 
-        public void SetDetails(User uDetails, ProcedureDB nameProcedure)
+        public void SetUserDetails(User uDetails, ProcedureDB nameProcedure)
         {
             ConnectToSetRequest(uDetails, nameProcedure);
         }
 
-        public void SetDetails(Role rDetails, ProcedureDB nameProcedure)
+        public void SetRoleDetails(Role rDetails, ProcedureDB nameProcedure)
         {
             ConnectToSetRequest(rDetails, nameProcedure);
         }
 
-        public void SetDetails(Dept dDetails, ProcedureDB nameProcedure)
+        public void SetDeptDetails(Dept dDetails, ProcedureDB nameProcedure)
         {
             ConnectToSetRequest(dDetails, nameProcedure);
         }
@@ -229,7 +229,7 @@ namespace WcfService
                 case ProcedureDB.UserUpdate:
                     ;
                     ProcedureString = $"CALL User_Update(" +
-                $"'{objU.Id}'," +
+                $"{objU.Id}," +
                 $"'{objU.LoginPass.Key}'," +
                 $"'{objU.LoginPass.Value}'," +
                 $"'{objU.RoleId}'," +
@@ -239,19 +239,19 @@ namespace WcfService
                     ProcedureString = $"CALL User_Delete({objU.Id})";
                     break;
                 case ProcedureDB.DeptInsert:
-                    ProcedureString = $"CALL Dept_Insert{objD.Id}, {objD.Name})";
+                    ProcedureString = $"CALL Dept_Insert('{objD.Name}')";
                     break;
                 case ProcedureDB.DeptUpdate:
-                    ProcedureString = $"CALL Dept_Update({objD.Id}, {objD.Name})";
+                    ProcedureString = $"CALL Dept_Update({objD.Id}, '{objD.Name}')";
                     break;
                 case ProcedureDB.DeptDelete:
                     ProcedureString = $"CALL Dept_Delete({objD.Id})";
                     break;
                 case ProcedureDB.RoleInsert:
-                    ProcedureString = $"CALL Role_Insert{objR.Id}, {objR.Name})";
+                    ProcedureString = $"CALL Role_Insert('{objR.Name}')";
                     break;
                 case ProcedureDB.RoleUpdate:
-                    ProcedureString = $"CALL Role_Update({objR.Id}, {objR.Name})";
+                    ProcedureString = $"CALL Role_Update({objR.Id}, '{objR.Name}')";
                     break;
                 case ProcedureDB.RoleDelete:
                     ProcedureString = $"CALL Role_Delete({objR.Id})";
@@ -264,8 +264,11 @@ namespace WcfService
     class Program
     {
         static void Main(string[] args)
-        {
+        {           
             //ListOfUser list = new ListOfUser();
+
+            //Role test = new Role() { Id = 4, Name = "Test name" };
+            //list.SetDetails(test, ProcedureDB.RoleInsert);
             //User added = new User() { Departament = "", Role = "", Password = "Rick@", Login = "Mortimer", DepartamentId = 2, RoleId = 1, Id = 1 };
             //list.SetUserDetails(added, ProcedureDB.UserInsert);
             ////string u = list.UpdateUserDetails(added);

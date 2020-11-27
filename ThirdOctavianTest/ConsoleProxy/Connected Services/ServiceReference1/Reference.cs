@@ -194,6 +194,12 @@ namespace ServiceReference1
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/SetUserDetails", ReplyAction="http://tempuri.org/IListOfUserService/SetUserDetailsResponse")]
         System.Threading.Tasks.Task SetUserDetailsAsync(ServiceReference1.User uDetails, ServiceReference1.ProcedureDB nameProcedure);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/SetRoleDetails", ReplyAction="http://tempuri.org/IListOfUserService/SetRoleDetailsResponse")]
+        System.Threading.Tasks.Task SetRoleDetailsAsync(ServiceReference1.Role rDetailsDetails, ServiceReference1.ProcedureDB nameProcedure);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/SetDeptDetails", ReplyAction="http://tempuri.org/IListOfUserService/SetDeptDetailsResponse")]
+        System.Threading.Tasks.Task SetDeptDetailsAsync(ServiceReference1.Dept dDetails, ServiceReference1.ProcedureDB nameProcedure);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListOfUserService/GetUsers", ReplyAction="http://tempuri.org/IListOfUserService/GetUsersResponse")]
         System.Threading.Tasks.Task<ServiceReference1.User[]> GetUsersAsync();
         
@@ -257,6 +263,16 @@ namespace ServiceReference1
         public System.Threading.Tasks.Task SetUserDetailsAsync(ServiceReference1.User uDetails, ServiceReference1.ProcedureDB nameProcedure)
         {
             return base.Channel.SetUserDetailsAsync(uDetails, nameProcedure);
+        }
+        
+        public System.Threading.Tasks.Task SetRoleDetailsAsync(ServiceReference1.Role rDetailsDetails, ServiceReference1.ProcedureDB nameProcedure)
+        {
+            return base.Channel.SetRoleDetailsAsync(rDetailsDetails, nameProcedure);
+        }
+        
+        public System.Threading.Tasks.Task SetDeptDetailsAsync(ServiceReference1.Dept dDetails, ServiceReference1.ProcedureDB nameProcedure)
+        {
+            return base.Channel.SetDeptDetailsAsync(dDetails, nameProcedure);
         }
         
         public System.Threading.Tasks.Task<ServiceReference1.User[]> GetUsersAsync()

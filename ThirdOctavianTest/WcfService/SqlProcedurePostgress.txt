@@ -34,8 +34,7 @@ CREATE OR REPLACE Procedure User_Insert
  (inLogin, inPassword, inRoleId, inDeptId)
  $$
 
-    Не разобрался как по итогу процедуры выводятся данные запроса. Не получилось прописать функцию, чтобы она возвращала все значения из таблицы,
-    да и сомневаюсь, нужно ли это тут. Главное, что череза ADO легко вносится информация в DataSet.
+    
      CREATE OR REPLACE Procedure Get_AllUsers
     (uId int = null)
     language sql
