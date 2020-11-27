@@ -14,7 +14,7 @@ export class FormDeptComponent {
 
   elementSelect: string ='';
   SelectDept(value: any) {
-    this.elementSelect = value; 
+    this.elementSelect = value;
     this.isselected = true;
   }
   setcom: ProcedureDB;
@@ -46,7 +46,6 @@ export class FormDeptComponent {
   }
   InputStringSave(event: any) {
     console.log(event.type);
-
     if (event.type == 'input') {
       this.selectDept.name = event.target.value;
       console.log(this.selectDept.name);
