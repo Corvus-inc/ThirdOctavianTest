@@ -15,7 +15,11 @@ namespace WcfService
     public interface IListOfUserService
     {
         [OperationContract]
-        void SetUserDetails(User uDetails, ProcedureDB nameProcedure);
+        void SetDetails(User uDetails, ProcedureDB nameProcedure);
+        [OperationContract]
+        void SetDetails(Role rDetailsDetails, ProcedureDB nameProcedure);
+        [OperationContract]
+        void SetDetails(Dept dDetails, ProcedureDB nameProcedure);
         [OperationContract]
         List<User> GetUsers();
         [OperationContract]
@@ -29,17 +33,19 @@ namespace WcfService
     {
         static string connectionString = "Host=localhost;Database=Corvus;Username=postgres;Persist Security Info=True;Password=pa$$word;";
 
-        public void SetUserDetails(User uDetails, ProcedureDB nameProcedure)
+        public void SetDetails(User uDetails, ProcedureDB nameProcedure)
         {
-            using (var con = new NpgsqlConnection(connectionString))
-            {
-                con.Open();
-                using (var cmd = new NpgsqlCommand(CallProcedureString(uDetails, nameProcedure), con))
+            ConnectToSetRequest(uDetails, nameProcedure);
+        }
 
-                {
-                    int result = cmd.ExecuteNonQuery();
-                }
-            }
+        public void SetDetails(Role rDetails, ProcedureDB nameProcedure)
+        {
+            ConnectToSetRequest(rDetails, nameProcedure);
+        }
+
+        public void SetDetails(Dept dDetails, ProcedureDB nameProcedure)
+        {
+            ConnectToSetRequest(dDetails, nameProcedure);
         }
         public List<User> GetUsers()
         {
@@ -95,7 +101,8 @@ namespace WcfService
             switch (dataInfo)
             {
                 case GetCommandDB.GetAllUser:
-                    {   users = new List<User>();
+                    {
+                        users = new List<User>();
                         User u;
                         DataTable tableData = data.Tables[0];
                         string Login;
@@ -103,10 +110,10 @@ namespace WcfService
                         for (int i = 0; i < tableData.Rows.Count; i++)
                         {
                             u = new User();
-                           
+
                             if (!tableData.Rows[i].ItemArray[0].Equals(DBNull.Value)) u.Id = (int)tableData.Rows[i].ItemArray[0];
                             else u.Id = tableData.Rows.Count + 1;
-                            
+
                             if (!tableData.Rows[i].ItemArray[1].Equals(DBNull.Value)) Login = (string)tableData.Rows[i].ItemArray[1];
                             else Login = string.Empty;
 
@@ -159,8 +166,7 @@ namespace WcfService
                             roles.Add(r);
                         }
                     }
-                        break;
-
+                    break;
             }
         }
         //Возвращает строку команды получения значений из БД
@@ -185,54 +191,75 @@ namespace WcfService
             }
             return cmd;
         }
-        //В Базе сознданы процедуры строки с обращением к которым собираются тут. Процедуры не возвращают значения. Стоит пересмотреть подход.
-        private string CallProcedureString(User uDetails, ProcedureDB nameProcedure)
+
+        private void ConnectToSetRequest(object details, ProcedureDB nameProcedure)
         {
+            using (var con = new NpgsqlConnection(connectionString))
+            {
+                con.Open();
+                using (var cmd = new NpgsqlCommand(CallProcedureString(details, nameProcedure), con))
+
+                {
+                    int result = cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        //В Базе сознданы процедуры, строки для обращения к которым собираются тут. Процедуры не возвращают значения. Стоит пересмотреть подход.
+        private string CallProcedureString(object details, ProcedureDB nameProcedure)
+        {
+            User objU = new User();
+            Role objR = new Role();
+            Dept objD = new Dept();
+
+            if (details is User) objU = details as User;
+            if (details is Role) objR = details as Role;
+            if (details is Dept) objD = details as Dept;
+
             string ProcedureString = string.Empty;
+
             switch (nameProcedure)
             {
                 case ProcedureDB.UserInsert:
-                    ProcedureString = $"Call User_Insert(" +
-                    $"'{uDetails.LoginPass.Key}'," +
-                    $"'{uDetails.LoginPass.Value}'," +
-                    $"{uDetails.RoleId}," +
-                    $"{uDetails.DepartamentId})";
+                    ProcedureString = $"CALL User_Insert(" +
+                    $"'{objU.LoginPass.Key}'," +
+                    $"'{objU.LoginPass.Value}'," +
+                    $"{objU.RoleId}," +
+                    $"{objU.DepartamentId})";
                     break;
                 case ProcedureDB.UserUpdate:
-                    ProcedureString = $"Call User_Update(" +
-                    $"'{uDetails.Id}'," +
-                    $"'{uDetails.LoginPass.Key}'," +
-                    $"'{uDetails.LoginPass.Value}'," +
-                    $"'{uDetails.RoleId}'," +
-                    $"'{uDetails.DepartamentId}')";
+                    ;
+                    ProcedureString = $"CALL User_Update(" +
+                $"'{objU.Id}'," +
+                $"'{objU.LoginPass.Key}'," +
+                $"'{objU.LoginPass.Value}'," +
+                $"'{objU.RoleId}'," +
+                $"'{objU.DepartamentId}')";
                     break;
                 case ProcedureDB.UserDelete:
-                    ProcedureString = $"Call User_Delete({uDetails.Id})";
+                    ProcedureString = $"CALL User_Delete({objU.Id})";
                     break;
                 case ProcedureDB.DeptInsert:
-
+                    ProcedureString = $"CALL Dept_Insert{objD.Id}, {objD.Name})";
                     break;
                 case ProcedureDB.DeptUpdate:
-
+                    ProcedureString = $"CALL Dept_Update({objD.Id}, {objD.Name})";
                     break;
                 case ProcedureDB.DeptDelete:
-
+                    ProcedureString = $"CALL Dept_Delete({objD.Id})";
                     break;
                 case ProcedureDB.RoleInsert:
-
+                    ProcedureString = $"CALL Role_Insert{objR.Id}, {objR.Name})";
                     break;
                 case ProcedureDB.RoleUpdate:
-
+                    ProcedureString = $"CALL Role_Update({objR.Id}, {objR.Name})";
                     break;
                 case ProcedureDB.RoleDelete:
-
+                    ProcedureString = $"CALL Role_Delete({objR.Id})";
                     break;
 
             }
             return ProcedureString;
         }
-
-        
     }
     class Program
     {
