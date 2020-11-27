@@ -29,7 +29,7 @@ export class SignalRService {
       .build();
     this.hubConnection
       .start()
-      .then(() => { this.hubConnection.invoke('Send', "Message for stabile connection"); })
+      .then()
       .catch(err => console.log('Error while starting connection: ' + err));
   }
   public addArrayUsersListener = () => {
@@ -47,11 +47,18 @@ export class SignalRService {
   }
   public addArrayDeptsListener = () => {
     this.hubConnection.on('addArrayDepts', (dataDept) => {
-      this.dataDept = dataDept; 
+      this.dataDept = dataDept;
       this.UpdateUserDetails();
       this.GeneratedStringsDepts();
     });
   }
+  public linkMethodListener = () => {
+    this.hubConnection.on('linkMethod', (link) => {
+      this.link = link;
+      console.log(link);
+    });
+  }
+
   public GetUsers = () => {
     this.hubConnection.invoke('GetUsers')
       .catch(err => console.error(err));
@@ -64,21 +71,21 @@ export class SignalRService {
     this.hubConnection.invoke('GetDepts')
       .catch(err => console.error(err));
   }
+  //Пллохо инкапсулируется вызов процедуры в базе данных. Возможно, нужно сделать три сущности enum для каждой таблицы отдельно, в сервисе.
+  public SetUser = (uDetails: User, setcom: ProcedureDB) => {
+    this.hubConnection.invoke('SetUser', uDetails, setcom)
+      .catch(err => console.error(err));
+  }
+  public SetRole = (uDetails: Role, setcom: ProcedureDB) => {
+    this.hubConnection.invoke('SetRole', uDetails, setcom)
+      .catch(err => console.error(err));
+  }
+  public SetDept = (uDetails: Dept, setcom: ProcedureDB) => {
+    this.hubConnection.invoke('SetDept', uDetails, setcom)
+      .catch(err => console.error(err));
+  }
 
-  public linkSet = () => {
-    this.hubConnection.on('linkMethod', (link) => {
-      this.link = link;
-      console.log(link);
-    });
-  }
-  public SetUserDB = (userDetails: User, setcom: ProcedureDB) => {
-    this.hubConnection.invoke('SetRequest', userDetails, setcom)
-      .catch(err => console.error(err));
-  }
-  public addGetRequest = () => {
-    this.hubConnection.invoke('GetRequest', 0)
-      .catch(err => console.error(err));
-  }
+
 
   UpdateUserDetails() {
     if (this.dataUser != null) {

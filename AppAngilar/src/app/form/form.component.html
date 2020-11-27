@@ -64,12 +64,13 @@
     <mat-label>Login</mat-label>
     <input (input)="InputStringSave($event)"
            matInput placeholder="Enter your username"
-           value=" {{elementSelect.Login}}">
+           value="{{elementSelect.Login}}">
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Enter your password</mat-label>
-    <input matInput [type]="hide ? 'password' : 'text'"
+    <input (input)="InputStringSave($event)"
+           matInput [type]="hide ? 'password' : 'text'"
            value="{{elementSelect.Pass}}">
     <button mat-icon-button
             matSuffix
@@ -82,7 +83,8 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Role</mat-label>
-    <mat-select value="{{elementSelect.Role}}">
+    <mat-select (openedChange)="InputStringSave($event)"
+                [(value)]="elementSelect.Role">
       <mat-option *ngFor="let role of service.displayedRoles"
                   [value]="role">{{role}}</mat-option>
     </mat-select>
@@ -90,7 +92,8 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Departament</mat-label>
-    <mat-select value="{{elementSelect.Dept}}">
+    <mat-select (openedChange)="InputStringSave($event)"
+                [(value)]="elementSelect.Dept">
       <mat-option *ngFor="let dept of service.displayedDepts"
                   [value]="dept">{{dept}}</mat-option>
     </mat-select>
@@ -116,8 +119,16 @@
   </button>
 </div>
 <mat-card class="card-user">
-  <p>Select User</p>
+  <p>This User be update or delete:</p>
   <p>Login User: {{elementSelect.Login}}</p>
+  <p>Pass User: {{elementSelect.Pass}}</p>
   <p>Role User: {{elementSelect.Role}}</p>
   <p>Dept User: {{elementSelect.Dept}}</p>
+</mat-card>
+<mat-card class="card-user">
+  <p>This User be add:</p>
+  <p>Login User: {{inputUserDetails.Login}}</p>
+  <p>Pass User: {{inputUserDetails.Pass}}</p>
+  <p>Role User: {{inputUserDetails.Role}}</p>
+  <p>Dept User: {{inputUserDetails.Dept}}</p>
 </mat-card>

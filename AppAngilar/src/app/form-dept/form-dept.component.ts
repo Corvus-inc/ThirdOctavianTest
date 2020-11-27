@@ -6,7 +6,7 @@ import { SignalRService } from '../_service/signal-r.service';
   templateUrl: './form-dept.component.html',
   styleUrls: ['./form-dept.component.css']
 })
-export class FormDeptComponent implements OnInit {
+export class FormDeptComponent {
   isselected: boolean= false;
   @Input() service: SignalRService;
 
@@ -20,8 +20,6 @@ export class FormDeptComponent implements OnInit {
   InputStringSave(event: any) {
     const value = event.target.value;
     this.inputDept = value;
-  }
-  ngOnInit(): void {
   }
   Add() {
 

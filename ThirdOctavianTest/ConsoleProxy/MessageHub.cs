@@ -13,18 +13,21 @@ namespace ConsoleProxy
         {
             ListOfUserServiceClient client = new ListOfUserServiceClient();
             var resultList = client.GetUsersAsync().Result;
+            Console.WriteLine("StartGetUser");
             await Clients.All.SendAsync("addArrayUsers", resultList);
         }
         public async Task GetRoles()
         {
             ListOfUserServiceClient client = new ListOfUserServiceClient();
             var resultList = client.GetRolesAsync().Result;
+            Console.WriteLine("StartGetRoles");
             await Clients.All.SendAsync("addArrayRoles", resultList);
         }
         public async Task GetDepts()
         {
             ListOfUserServiceClient client = new ListOfUserServiceClient();
             var resultList = client.GetDeptsAsync().Result;
+            Console.WriteLine("StartGetDepts");
             await Clients.All.SendAsync("addArrayDepts", resultList);
         }
         public async Task SetUser(User uDetails, ProcedureDB SetCommand)
