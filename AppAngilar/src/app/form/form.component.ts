@@ -12,6 +12,7 @@ import { User } from '../_interfaces/user';
 export class FormComponent {
   @Input() service: SignalRService;
   hide = true;
+  
   isselected = false;
   displayedColumns = ['login', 'password', 'role', 'departament'];
   elementSelect: UserDetails = { id: 0, Login: '', Pass: '', Dept: '', Role: '' };
@@ -47,14 +48,13 @@ export class FormComponent {
     this.inputUserDetails = copy;
     this.isselected = true;
   }
-  InputStringSave(event: any) {
-    if (event.type == 'input') {
-      if (event.target.id == "mat-input-0") {
-        this.inputUserDetails.Login = event.target.value;
-      }
-      if (event.target.id == "mat-input-1") {
-        this.inputUserDetails.Pass = event.target.value;
-      }
+  InputStringSave(event: any, id: number) {
+    if (event.type == 'input'&& id == 2) {
+      this.inputUserDetails.Login = event.target.value;
+    }
+    else if (event.type == 'input'&& id == 1) {
+      this.inputUserDetails.Pass = event.target.value;
+
     }
     console.log(event);
 

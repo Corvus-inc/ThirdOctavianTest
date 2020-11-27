@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SignalRService } from '../_service/signal-r.service';
 import { Role } from '../_interfaces/role';
 import { ProcedureDB } from '../_interfaces/set-command';
@@ -20,7 +20,9 @@ export class FormRolesComponent {
   setcom: ProcedureDB;
   selectRole: Role = { id: 0, name: '' };
   Add() {
-
+    this.setcom = ProcedureDB.RoleInsert;
+    console.log(this.selectRole);
+    this.service.SetRole(this.selectRole, this.setcom);
   }
   Update() {
     this.IdSelectRole();
@@ -32,7 +34,7 @@ export class FormRolesComponent {
     this.IdSelectRole();
     this.selectRole.name = this.elementSelect;
     this.setcom = ProcedureDB.RoleDelete;
- 
+
     this.service.SetRole(this.selectRole, this.setcom);
   }
   IdSelectRole() {
@@ -43,15 +45,14 @@ export class FormRolesComponent {
     }
   }
   InputStringSave(event: any) {
-    console.log(event);
+    console.log(event.type);
 
     if (event.type == 'input') {
-      if (event.target.id == "mat-input-0") {
-        this.selectRole.name = event.target.value;
-        console.log(this.selectRole.name);
-
-      }
+      this.selectRole.name = event.target.value;
+      console.log(this.selectRole.name);
     }
   }
 }
+
+
 

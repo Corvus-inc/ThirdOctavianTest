@@ -62,14 +62,14 @@
 <div class="example-container-fields">
   <mat-form-field appearance="fill">
     <mat-label>Login</mat-label>
-    <input (input)="InputStringSave($event)"
+    <input (input)="InputStringSave($event, 2)"
            matInput placeholder="Enter your username"
            value="{{elementSelect.Login}}">
   </mat-form-field>
 
   <mat-form-field appearance="fill">
     <mat-label>Enter your password</mat-label>
-    <input (input)="InputStringSave($event)"
+    <input (input)="InputStringSave($event, 1)"
            matInput [type]="hide ? 'password' : 'text'"
            value="{{elementSelect.Pass}}">
     <button mat-icon-button
@@ -83,7 +83,7 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Role</mat-label>
-    <mat-select (openedChange)="InputStringSave($event)"
+    <mat-select (openedChange)="InputStringSave($event, 1)"
                 [(value)]="elementSelect.Role">
       <mat-option *ngFor="let role of service.displayedRoles"
                   [value]="role">{{role}}</mat-option>
@@ -92,7 +92,7 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Departament</mat-label>
-    <mat-select (openedChange)="InputStringSave($event)"
+    <mat-select (openedChange)="InputStringSave($event, 1)"
                 [(value)]="elementSelect.Dept">
       <mat-option *ngFor="let dept of service.displayedDepts"
                   [value]="dept">{{dept}}</mat-option>
