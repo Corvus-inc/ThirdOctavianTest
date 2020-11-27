@@ -14,7 +14,7 @@ export class FormDeptComponent {
 
   elementSelect: string ='';
   SelectDept(value: any) {
-    this.elementSelect = value;
+    this.elementSelect = value; 
     this.isselected = true;
   }
   setcom: ProcedureDB;
