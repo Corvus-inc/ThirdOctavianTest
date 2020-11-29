@@ -25,7 +25,7 @@ export class SignalRService {
 
     console.log('Start Cnnection to SignalR');
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:5001/MessageHub')
+      .withUrl('http://5.16.74.108:5000/MessageHub')
       .build();
     this.hubConnection
       .start()

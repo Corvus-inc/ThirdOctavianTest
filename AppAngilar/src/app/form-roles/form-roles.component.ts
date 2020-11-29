@@ -21,21 +21,21 @@ export class FormRolesComponent {
   selectRole: Role = { id: 0, name: '' };
   Add() {
     this.setcom = ProcedureDB.RoleInsert;
-    console.log(this.selectRole);
     this.service.SetRole(this.selectRole, this.setcom);
+    this.service.GetRoles();
   }
   Update() {
     this.IdSelectRole();
     this.setcom = ProcedureDB.RoleUpdate;
-    console.log(this.selectRole);
     this.service.SetRole(this.selectRole, this.setcom);
+    this.service.GetRoles();
   }
   Delete() {
     this.IdSelectRole();
     this.selectRole.name = this.elementSelect;
     this.setcom = ProcedureDB.RoleDelete;
-
     this.service.SetRole(this.selectRole, this.setcom);
+    this.service.GetRoles();
   }
   IdSelectRole() {
     for (var _i = 0; _i < this.service.dataRole.length; _i++) {
@@ -45,8 +45,6 @@ export class FormRolesComponent {
     }
   }
   InputStringSave(event: any) {
-    console.log(event.type);
-
     if (event.type == 'input') {
       this.selectRole.name = event.target.value;
       console.log(this.selectRole.name);

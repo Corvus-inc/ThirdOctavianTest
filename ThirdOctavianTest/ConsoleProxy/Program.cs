@@ -5,6 +5,8 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace ConsoleProxy
 {
@@ -22,8 +24,13 @@ namespace ConsoleProxy
             CreateDefaultBuilder(args).Build().Run();
         }
 
-        private static IWebHostBuilder CreateDefaultBuilder(string[] args) =>
-           WebHost.CreateDefaultBuilder(args)
+        private static IWebHostBuilder CreateDefaultBuilder(string[] args)
+        {
+            
+            return WebHost.CreateDefaultBuilder(args)
+            .PreferHostingUrls(false)
+            .UseUrls("http://*:5000")
               .UseStartup<Startup>();
+        }
     }
 }

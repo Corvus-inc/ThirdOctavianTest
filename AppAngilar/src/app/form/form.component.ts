@@ -21,25 +21,26 @@ export class FormComponent {
   uDetails: User = { id: 0, loginPass: { Key: '', Value: '' }, departamentId: 0, roleId: 0 };
   setCommand: ProcedureDB;
 
-
-
   AddUser() {
     console.log('Adduser');
     this.UserDetailsConvertToUser(this.inputUserDetails)
     this.setCommand = ProcedureDB.UserInsert;
     this.service.SetUser(this.uDetails, this.setCommand);
+    this.service.GetUsers();
   }
   UpdateUser() {
     console.log('Updateuser');
     this.UserDetailsConvertToUser(this.inputUserDetails)
     this.setCommand = ProcedureDB.UserUpdate;
     this.service.SetUser(this.uDetails, this.setCommand)
+    this.service.GetUsers();
   }
   DeleteUser() {
     console.log('Deleteuser');
     this.UserDetailsConvertToUser(this.elementSelect)
     this.setCommand = ProcedureDB.UserDelete;
     this.service.SetUser(this.uDetails, this.setCommand)
+    this.service.GetUsers();
   }
 
   SelectRow(names: UserDetails) {
@@ -56,7 +57,6 @@ export class FormComponent {
       this.inputUserDetails.Pass = event.target.value;
 
     }
-    console.log(event);
 
     if (!event) {
       this.inputUserDetails.Role = this.elementSelect.Role;
@@ -77,6 +77,5 @@ export class FormComponent {
       if (this.service.dataDept[_i].name == ud.Dept)
         this.uDetails.departamentId = this.service.dataDept[_i].id;
     }
-    console.log(this.uDetails);
   }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace ConsoleProxy
 {
@@ -14,16 +16,19 @@ namespace ConsoleProxy
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string[] adress = new[] { "http://localhost:4200", "http://192.168.0.103:4200" };
+            string[] adress = new[] { "http://localhost:4200", "http://192.168.0.103:4200", "http://198.168.0.103:4200", "http://*:5000", "http://*:5000", "http://198.168.0.103:5000", "http://5.16.74.108:4200", "http://5.16.74.108:5000" };
+
+           
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy", builder => builder.WithOrigins(adress)
+                options.AddPolicy("CorsPolicy", builder => builder.WithOrigins("http://localhost:4200", "http://192.168.0.103:4200", "http://198.168.0.103:4200", "http://*:5000", "http://*:5000", "http://198.168.0.103:5000", "http://5.16.74.108:4200", "http://5.16.74.108:5000")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());
             });    
             services.AddSignalR();
         }
+
         public void Configure(IApplicationBuilder app)
         {
             app.UseCors("CorsPolicy");

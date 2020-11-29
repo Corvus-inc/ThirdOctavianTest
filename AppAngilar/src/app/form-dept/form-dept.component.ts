@@ -21,21 +21,21 @@ export class FormDeptComponent {
   selectDept: Dept = { id: 0, name: '' };
  Add() {
     this.setcom = ProcedureDB.DeptInsert;
-    console.log(this.selectDept);
-    this.service.SetDept(this.selectDept, this.setcom);
+   this.service.SetDept(this.selectDept, this.setcom);
+   this.service.GetDepts();
   }
   Update() {
     this.IdSelectDept();
     this.setcom = ProcedureDB.DeptUpdate;
-    console.log(this.selectDept);
     this.service.SetDept(this.selectDept, this.setcom);
+    this.service.GetDepts();
   }
   Delete() {
     this.IdSelectDept();
     this.selectDept.name = this.elementSelect;
     this.setcom = ProcedureDB.DeptDelete;
-
     this.service.SetDept(this.selectDept, this.setcom);
+    this.service.GetDepts();
   }
   IdSelectDept() {
     for (var _i = 0; _i < this.service.dataDept.length; _i++) {
