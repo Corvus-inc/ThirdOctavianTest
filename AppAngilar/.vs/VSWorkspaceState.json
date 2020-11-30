@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\form",
+    "\\src\\app\\form-dept",
+    "\\src\\app\\form-main",
+    "\\src\\app\\form-roles",
+    "\\src\\app\\_service"
+  ],
+  "SelectedNode": "\\src\\app\\form-roles\\form-roles.component.ts",
+  "PreviewInSolutionExplorer": false
+}
